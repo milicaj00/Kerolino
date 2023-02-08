@@ -16,10 +16,7 @@ interface IUser {
 
 export interface UserModelInterface extends IUser, mongoose.Document {
     fullName: string;
-    createdAt: Date;
-    updatedAt: Date;
     comparePassword(candidatePassword: string): Promise<boolean>;
-
 }
 
 // export interface UserModelInterface extends mongoose.Model<UserDoc> {

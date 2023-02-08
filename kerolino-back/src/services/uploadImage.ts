@@ -4,12 +4,12 @@ import multer, { FileFilterCallback } from 'multer'
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/')
-       
+
     },
 
     filename: function (req: any, file: any, cb: any) {
-        //chage image name
-        cb(null, "bibnuonikn_" + file.originalname)
+        const uniquePreffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, uniquePreffix + "_" + file.originalname)
     }
 });
 const fileFilter = (req: any, file: any, callback: any) => {
@@ -37,9 +37,9 @@ export const upload_img = (req: any, res: any, next: any) => {
 
         const file = req.file;
 
-        if (!file) {
-            return res.status(500).send({ success: false, message: "Please upload a file" });
-        }
+        // if (!file) {
+        //     return res.status(500).send({ success: false, message: "Please upload a file" });
+        // }
 
         next()
     })

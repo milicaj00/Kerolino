@@ -82,6 +82,10 @@ export const editProduct = async (req: Request, res: Response) => {
         }
         product.set(req.body)
 
+        if (req.file) {
+            product.set({ image: req.file.path.split('\\')[1] })
+        }
+
         return await product.save()
             .then(() => res.status(200).json({ product }))
             .catch(err => {
