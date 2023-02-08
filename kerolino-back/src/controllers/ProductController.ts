@@ -1,24 +1,38 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import Product from "../models/product/product.model";
+import User from "../models/user/user.model";
 
-export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
-    const product = new Product({
-        _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        image: req.body.image,
-        price: req.body.price,
-        owner: req.body.ownerId
-    })
-    return await product.save()
-        .then(() => res.status(200).json({ product }))
-        .catch(err => {
-            console.log(err)
-            res.status(500).json({ message: 'Connection error' })
+export const createProduct = async (req: Request, res: Response) => {
+    //PROVERE !!!
+    console.log(req.file)
+    try {
+        const product = new Product({
+            _id: new mongoose.Types.ObjectId(),
+            name: req.body.name,
+            image: req.file?.path.split('\\')[1],
+            price: req.body.price,
+            amount: req.body.amount,
+            owner: req.body.ownerId
         })
+        const user = await User.findById(req.body.ownerId)
+        if (user) {
+            await user.updateOne({ $push: { myProducts: product._id } })
+        }
+
+        return await product.save()
+            .then(() => res.status(200).json({ product }))
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({ message: 'Connection error' })
+            })
+    } catch (error) {
+        console.log('error', error)
+    }
+
 }
 
-export const getProduct = async (req: Request, res: Response, next: NextFunction) => {
+export const getProduct = async (req: Request, res: Response) => {
     const { productId } = req.params
 
     if (!productId) {
@@ -38,7 +52,7 @@ export const getProduct = async (req: Request, res: Response, next: NextFunction
     }
 }
 
-export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllProducts = async (req: Request, res: Response) => {
 
     try {
         const products = await Product.find().populate('owner').select('-__v');
@@ -51,8 +65,9 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const editProduct = async (req: Request, res: Response, next: NextFunction) => {
+export const editProduct = async (req: Request, res: Response) => {
 
+    //PROVERE !!!
     const { productId } = req.body
 
     if (!productId) {
@@ -80,7 +95,7 @@ export const editProduct = async (req: Request, res: Response, next: NextFunctio
 
 }
 
-export const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteProduct = async (req: Request, res: Response) => {
     const { productId } = req.params
 
     if (!productId) {
@@ -99,4 +114,20 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
         return res.status(500).json({ message: 'Connection error' })
     }
 
+}
+
+
+export const findProduct = async (req: Request, res: Response) => {
+
+    const filter: string = req.params.filter
+
+    try {
+        const products = await Product.find({ name: { $regex: filter } }).populate('owner').select('-__v');
+
+        return res.status(200).json({ products })
+    }
+    catch (err: any) {
+        console.log(err)
+        return res.status(500).json({ message: 'Connection error' })
+    }
 }

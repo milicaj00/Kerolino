@@ -6,13 +6,23 @@ interface IUser {
     email: string;
     password: string;
     address: string;
-    role: boolean;
+    postNumber: number;
+    city: string;
+    phoneNum: string;
+    is_seller: boolean;
+    myProducts: mongoose.Types.ObjectId[]
     //veza:string
 }
 
-interface UserDoc extends mongoose.Document { }
+export interface UserModelInterface extends IUser, mongoose.Document {
+    fullName: string;
+    createdAt: Date;
+    updatedAt: Date;
+    comparePassword(candidatePassword: string): Promise<boolean>;
 
-export interface UserModelInterface extends mongoose.Model<UserDoc> {
-    build(attr: IUser): UserDoc
 }
+
+// export interface UserModelInterface extends mongoose.Model<UserDoc> {
+//     build(attr: IUser): UserDoc
+// }
 
