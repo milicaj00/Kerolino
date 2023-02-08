@@ -26,7 +26,6 @@ export const Navbar = ({ user }) => {
           { val: "About", link: "/about" },
           { val: "Contact", link: "/contact" },
           { val: "Profile", link: "/profile" },
-          { val: "Log out", link: "/" },
         ]
       : [
           { val: "Shop", link: "/" },
@@ -54,6 +53,21 @@ export const Navbar = ({ user }) => {
             </ListItemButton>
           </ListItem>
         ))}
+        {user && (
+          <ListItem key="Log out" disablePadding>
+            <ListItemButton
+              sx={{ textAlign: "center" }}
+              onClick={() => {
+                localStorage.clear();
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
+              }}
+            >
+              <ListItemText primary="Log out" />
+            </ListItemButton>
+          </ListItem>
+        )}
       </List>
     </Box>
   );
@@ -93,6 +107,21 @@ export const Navbar = ({ user }) => {
                 {item.val}
               </Button>
             ))}
+            {user && (
+              <Button
+                key="Log out"
+                sx={{ color: "#fff" }}
+                onClick={() => {
+                  localStorage.clear();
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1000);
+                  navigate("../");
+                }}
+              >
+                Log out
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>

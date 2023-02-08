@@ -8,6 +8,7 @@ import { Footer } from "./Footer";
 
 function App() {
   const [user, setUser] = React.useState(null);
+  
   React.useEffect(() => {
     const u = JSON.parse(localStorage.getItem("user"));
     setUser(u);
