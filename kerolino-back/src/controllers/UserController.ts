@@ -3,14 +3,9 @@ import mongoose from "mongoose";
 import { Role } from "../models/user/role";
 import User from "../models/user/user.model";
 
-export const createUser = async (req: Request, res: Response, next: NextFunction) => {
+export const createUser = async (req: Request, res: Response) => {
 
     //PROVERE !!!
-    let role: Role = req.body.role
-
-    if (!role) {
-        role = Role.kupac
-    }
 
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
@@ -22,36 +17,45 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
         postNumber: req.body.postNumber,
         city: req.body.city,
         phoneNum: req.body.phoneNum,
-        role
+        is_seller: false
     })
 
     return await user.save()
-        .then(() => res.status(200).json({ user }))
+        .then(() => res.status(200).json({
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            is_seller: user.is_seller
+        }))
         .catch(err => {
             console.log(err)
             if (err.code == 11000 && err.keyValue?.email == req.body.email) {
                 res.status(500).json({ message: 'User already exists' })
             }
             else {
-
                 res.status(500).json({ message: 'Connection error' })
             }
         })
 }
 
-export const getUser = async (req: Request, res: Response, next: NextFunction) => {
+export const getUser = async (req: Request, res: Response) => {
     const { userId } = req.params
-  
+
     if (!userId) {
         return res.status(422).json({ message: 'you must enter id' })
     }
 
     try {
-        const user = await User.findById(userId).populate('myProducts')
+        const user = await User.findById(userId)//.populate('myProducts')
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }
-        return res.status(200).json({ user })
+        return res.status(200).json({
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            is_seller: user.is_seller
+        })
     }
     catch (err: any) {
         console.log(err)
@@ -59,16 +63,24 @@ export const getUser = async (req: Request, res: Response, next: NextFunction) =
     }
 }
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body
     //PROVERE
 
     try {
-        const user = await User.findOne({ email, password })
+        const user = await User.findOne({ email })
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }
-        return res.status(200).json({ user })
+        if (!await user.comparePassword(password)) {
+            return res.status(406).json({ message: 'Wrong password' })
+        }
+        return res.status(200).json({
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            is_seller: user.is_seller
+        })
     }
     catch (err: any) {
         console.log(err)
@@ -76,7 +88,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     }
 }
 
-export const editUser = async (req: Request, res: Response, next: NextFunction) => {
+export const editUser = async (req: Request, res: Response) => {
 
     //PROVERE !!!
     const { userId } = req.body
@@ -106,7 +118,7 @@ export const editUser = async (req: Request, res: Response, next: NextFunction) 
 
 }
 
-export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteUser = async (req: Request, res: Response) => {
     const { userId } = req.params
 
     if (!userId) {

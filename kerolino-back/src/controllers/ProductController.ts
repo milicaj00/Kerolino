@@ -5,7 +5,7 @@ import User from "../models/user/user.model";
 
 export const createProduct = async (req: Request, res: Response) => {
     //PROVERE !!!
-    console.log(req.file)
+
     try {
         const product = new Product({
             _id: new mongoose.Types.ObjectId(),
@@ -13,15 +13,16 @@ export const createProduct = async (req: Request, res: Response) => {
             image: req.file?.path.split('\\')[1],
             price: req.body.price,
             amount: req.body.amount,
-            owner: req.body.ownerId
+            category: req.body.categoryId
+            //  owner: req.body.ownerId
         })
-        const user = await User.findById(req.body.ownerId)
-        if (user) {
-            await user.updateOne({ $push: { myProducts: product._id } })
-        }
+        // const user = await User.findById(req.body.ownerId)
+        // if (user) {
+        //     await user.updateOne({ $push: { myProducts: product._id } })
+        // }
 
         return await product.save()
-            .then(() => res.status(200).json({ product }))
+            .then(() => res.status(200).json({ message: 'Successfully added new product' }))
             .catch(err => {
                 console.log(err)
                 res.status(500).json({ message: 'Connection error' })
@@ -40,7 +41,7 @@ export const getProduct = async (req: Request, res: Response) => {
     }
 
     try {
-        const product = await Product.findById(productId).populate('owner').select('-__v');
+        const product = await Product.findById(productId).populate('category').select('-__v');
         if (!product) {
             return res.status(404).json({ message: 'Product not found' })
         }
@@ -55,7 +56,7 @@ export const getProduct = async (req: Request, res: Response) => {
 export const getAllProducts = async (req: Request, res: Response) => {
 
     try {
-        const products = await Product.find().populate('owner').select('-__v');
+        const products = await Product.find().populate('category')
 
         return res.status(200).json({ products })
     }
@@ -122,7 +123,7 @@ export const findProduct = async (req: Request, res: Response) => {
     const filter: string = req.params.filter
 
     try {
-        const products = await Product.find({ name: { $regex: filter } }).populate('owner').select('-__v');
+        const products = await Product.find({ name: { $regex: filter } }).populate('category').select('-__v');
 
         return res.status(200).json({ products })
     }
