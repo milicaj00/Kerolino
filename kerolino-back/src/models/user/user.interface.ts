@@ -10,7 +10,7 @@ interface IUser {
     city: string;
     phoneNum: string;
     is_seller: boolean;
-    myProducts: mongoose.Types.ObjectId[]
+    //myProducts: mongoose.Types.ObjectId[]
     //veza:string
 }
 

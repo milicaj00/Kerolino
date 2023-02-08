@@ -13,7 +13,6 @@ productRoutes.put('/edit-product', editProduct)
 productRoutes.delete('/delete-product/:productId', deleteProduct)
 
 productRoutes.get('/find-product/:filter', findProduct)
-//SEARCH\
 
 
 export default productRoutes;

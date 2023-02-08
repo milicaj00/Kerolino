@@ -11,9 +11,9 @@ const UserSchema: Schema = new Schema(
         address: { type: String, required: false },
         postNumber: { type: Number, required: false },
         city: { type: String, required: false },
-        phoneNum: { type: String, required: true },
+        phoneNum: { type: String, required: false },
         is_seller: { type: Boolean, required: true },
-        myProducts: { type: Array<Schema.Types.ObjectId>, ref: 'Product', default: [], required: false },
+      //  myProducts: { type: Array<Schema.Types.ObjectId>, ref: 'Product', default: [], required: false },
         myOrders: { type: Array<Schema.Types.ObjectId>, ref: 'Order', default: [], required: false }
     },
     {
