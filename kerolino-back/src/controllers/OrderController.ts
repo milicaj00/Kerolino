@@ -26,6 +26,18 @@ export const getAllOrders = async (req: Request, res: Response) => {
         const orders = await Order.find({ sent: false }).populate('buyer').populate('product').select('-__v');
 
         const all_orders = orders.map(order => {
+            // address: user.address + ", " + user.postNumber + " " + user.city,
+
+            let address = ""
+            if ('address' in order.buyer) {
+                address += order.buyer.address + ", "
+            }
+            if ('postNumber' in order.buyer) {
+                address += order.buyer.postNumber + " "
+            }
+            if ('city' in order.buyer) {
+                address += order.buyer.city + " "
+            }
 
             return {
                 _id: order._id,
@@ -33,8 +45,8 @@ export const getAllOrders = async (req: Request, res: Response) => {
                 sent: order.sent,
                 buyer: {
                     fullName: 'fullName' in order.buyer ? order.buyer.fullName : "",
-                    address: 'address' in order.buyer ? order.buyer.address : "",
-                    phoneNumber: 'phoneNumber' in order.buyer ? order.buyer.phoneNumber : "",
+                    address: address,
+                    phoneNumber: 'phoneNum' in order.buyer ? order.buyer.phoneNum : "",
                 },
                 product: order.product,
                 date: dayjs(order.createdAt).format('DD-MM-YYYY HH:mm')
