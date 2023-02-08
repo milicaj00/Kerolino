@@ -1,6 +1,7 @@
 import React from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import { signIn } from "./Api";
 
 export const SignIn = () => {
   const handleSubmit = (event) => {
@@ -25,7 +26,12 @@ export const SignIn = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={(event) => signIn(event)}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             required
