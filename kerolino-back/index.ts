@@ -6,6 +6,7 @@ import { json } from "body-parser";
 import mongoose from 'mongoose'
 import userRouter from "./src/routes/UserRoutes";
 import productRoutes from "./src/routes/ProductRoutes";
+import orderRoutes from "./src/routes/OrderRoutes";
 
 
 mongoose.connect(process.env.MONGO_URL!, { retryWrites: true, w: 'majority' })
@@ -23,6 +24,7 @@ app.use(morgan("common"));
 
 app.use('/api/user', userRouter)
 app.use('/api/product', productRoutes)
+app.use('/api/order', orderRoutes)
 
 app.get('/test', (req: Request, res: Response) => res.send('ok'))
 

@@ -3,13 +3,16 @@ import mongoose from 'mongoose'
 interface IProduct {
     name: string;
     image: string;
-    price: Number;
-    owner: string;
+    price: number;
+    amount: number;
+    owner: mongoose.Types.ObjectId;
 }
 
-interface ProductDoc extends mongoose.Document { }
+export interface ProductModelInterface extends IProduct, mongoose.Document {
 
-export interface ProductModelInterface extends mongoose.Model<ProductDoc> {
-    build(attr: IProduct): ProductDoc
 }
+
+// export interface ProductModelInterface extends mongoose.Model<ProductDoc> {
+//     build(attr: IProduct): ProductDoc
+// }
 
