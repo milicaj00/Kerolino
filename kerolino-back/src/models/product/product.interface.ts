@@ -5,7 +5,8 @@ interface IProduct {
     image: string;
     price: number;
     amount: number;
-   // owner: mongoose.Types.ObjectId;
+    category: mongoose.Types.ObjectId
+    // owner: mongoose.Types.ObjectId;
 }
 
 export interface ProductModelInterface extends IProduct, mongoose.Document {
