@@ -2,10 +2,19 @@ import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import Product from "../models/product/product.model";
 import User from "../models/user/user.model";
+import { v_create, v_edit } from "../validations/product/validate-product";
 
 export const createProduct = async (req: Request, res: Response) => {
     //PROVERE !!!
-
+    if (!v_create(req.body)) {
+        return res.status(403).json({ message: 'not valid inputs' })
+    }
+    if (!req.body.categoryId) {
+        return res.status(403).json({ message: 'not valid inputs' })
+    }
+    if (!req.file) {
+        return res.status(403).json({ message: 'you must enter an image' })
+    }
     try {
         const product = new Product({
             _id: new mongoose.Types.ObjectId(),
@@ -68,6 +77,10 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
 export const editProduct = async (req: Request, res: Response) => {
 
+    if (!v_edit(req.body)) {
+        return res.status(403).json({ message: 'not valid inputs' })
+    }
+
     //PROVERE !!!
     const { productId } = req.body
 
@@ -81,6 +94,10 @@ export const editProduct = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'product not found' })
         }
         product.set(req.body)
+
+        if (req.file) {
+            product.set({ image: req.file.path.split('\\')[1] })
+        }
 
         return await product.save()
             .then(() => res.status(200).json({ product }))

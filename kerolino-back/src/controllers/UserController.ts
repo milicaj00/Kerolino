@@ -2,10 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { Role } from "../models/user/role";
 import User from "../models/user/user.model";
+import { v_edit, v_login, v_register } from "../validations/user/validate-user";
 
 export const createUser = async (req: Request, res: Response) => {
 
     //PROVERE !!!
+
+    if (!v_register(req.body)) {
+        return res.status(403).json({ message: 'not valid inputs' })
+    }
 
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
@@ -25,7 +30,12 @@ export const createUser = async (req: Request, res: Response) => {
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
-            is_seller: user.is_seller
+            is_seller: user.is_seller,
+            fullAddress: user.address + ", " + user.postNumber + " " + user.city,
+            postNumber: user.postNumber,
+            address: user.address,
+            city: user.city,
+            phoneNum: user.phoneNum,
         }))
         .catch(err => {
             console.log(err)
@@ -54,7 +64,12 @@ export const getUser = async (req: Request, res: Response) => {
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
-            is_seller: user.is_seller
+            is_seller: user.is_seller,
+            fullAddress: user.address + ", " + user.postNumber + " " + user.city,
+            postNumber: user.postNumber,
+            address: user.address,
+            city: user.city,
+            phoneNum: user.phoneNum,
         })
     }
     catch (err: any) {
@@ -67,6 +82,9 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body
     //PROVERE
 
+    if (!v_login(req.body)) {
+        return res.status(403).json({ message: 'not valid inputs' })
+    }
     try {
         const user = await User.findOne({ email })
         if (!user) {
@@ -79,7 +97,12 @@ export const login = async (req: Request, res: Response) => {
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
-            is_seller: user.is_seller
+            is_seller: user.is_seller,
+            fullAddress: user.address + ", " + user.postNumber + " " + user.city,
+            postNumber: user.postNumber,
+            address: user.address,
+            city: user.city,
+            phoneNum: user.phoneNum,
         })
     }
     catch (err: any) {
@@ -95,6 +118,10 @@ export const editUser = async (req: Request, res: Response) => {
 
     if (!userId) {
         return res.status(422).json({ message: 'you must enter id' })
+    }
+
+    if (!v_edit(req.body)) {
+        return res.status(403).json({ message: 'not valid inputs' })
     }
 
     try {
