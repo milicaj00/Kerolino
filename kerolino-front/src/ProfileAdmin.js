@@ -64,11 +64,11 @@ export const ProfileAdmin = () => {
           </TabPanel>
 
           <TabPanel value={tab} index={1}>
-            <OrdersTable />
+            <CategoryTable />
           </TabPanel>
 
           <TabPanel value={tab} index={2}>
-            <CategoryTable />
+            <OrdersTable />
           </TabPanel>
         </Grid>
       </Grid>

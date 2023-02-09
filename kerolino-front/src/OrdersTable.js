@@ -33,7 +33,7 @@ export const OrdersTable = () => {
 
   return (
     <Box className="marginS">
-      {orders.map((o, i) => (
+      {orders?.map((o, i) => (
         <Box key={i} display="flex" flexDirection="row">
           <Accordion
             sx={{ flexGrow: 1, marginBottom: "1%" }}
@@ -43,14 +43,18 @@ export const OrdersTable = () => {
             }}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h6" sx={{ flexGrow: 1, textTransform: "capitalize" }}>{o.buyer.name} {o.buyer.surname}</Typography>
+              <Typography
+                variant="h6"
+                sx={{ flexGrow: 1, textTransform: "capitalize" }}
+              >
+                {o.buyer.fullName}
+              </Typography>
               <Typography
                 variant="h6"
                 color="text.secondary"
-                sx={{ marginRight: "2%"}}
+                sx={{ marginRight: "2%" }}
               >
                 {o?.date}
-
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -58,24 +62,21 @@ export const OrdersTable = () => {
                 <Grid
                   item
                   xs={12}
-                  md={2}
+                  md={6}
                   sx={{
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-evenly",
                   }}
                 >
-                  {/* <Typography>Broj telefona: {z.brojtelefonaT}</Typography>
-                  <Typography sx={{ fontWeight: 600 }}>
-                    Intenzitet: {z.intenzitet}
+                  <Typography fontWeight="500" >{o.buyer?.email}</Typography>
+                  <Typography fontWeight="500" >{o.buyer?.phoneNumber}</Typography>
+                  <Typography  fontWeight="500" sx={{ textTransform: "capitalize" }}>
+                    {o.buyer?.address}
                   </Typography>
-                  <Typography sx={{ fontWeight: 600 }}>Tip: {z.tip}</Typography>
-                  <Typography sx={{ fontWeight: 600 }}>
-                    Online: {z.isOnline.toString()}
-                  </Typography> */}
                 </Grid>
 
-                {/* <Grid item xs={12} md={10}>
+                {/* <Grid item xs={12} md={6}>
                   <Box textAlign="center">
                     <Typography mb={1} textAlign="center" fontWeight="500">
                       {" "}

@@ -83,7 +83,6 @@ export const Shop = () => {
             className="cardCenter"
           >
             <Card sx={{ minWidth: "100%", minHeight: "100%" }}>
-              <CardActionArea>
                 <CardMedia
                   component="img"
                   image={PUTANJA + p.image}
@@ -97,7 +96,6 @@ export const Shop = () => {
                     Cena: {p.price}
                   </Typography>
                 </CardContent>
-              </CardActionArea>
               <CardActions className="cardCenter">
                 <Button
                   size="small"

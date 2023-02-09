@@ -78,9 +78,9 @@ export const ProductTable = () => {
               {products?.map((p, i) => (
                 <Fragment key={p._id}>
                   <TableRow key={p._id}>
-                    <TableCell>{p.name}</TableCell>
-                    <TableCell>{p.price}</TableCell>
-                    <TableCell>{p.amount}</TableCell>
+                    <TableCell>{p?.name}</TableCell>
+                    <TableCell>{p?.price}</TableCell>
+                    <TableCell>{p?.amount}</TableCell>
                     <TableCell>{p?.category?.name}</TableCell>
                     <TableCell>
                       <Button

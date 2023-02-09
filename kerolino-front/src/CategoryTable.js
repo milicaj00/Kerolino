@@ -28,9 +28,9 @@ export const CategoryTable = () => {
   return (
     <Box>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={4} sx={{ minWidth: "100%", minHeight: "100%" }}>
-          <Paper className="cardCenter" sx={{ padding: "2vh 2vw" }}>
-            <Typography component="h1" variant="h5">
+        <Grid item xs={12} sm={4} sx={{ }}>
+          <Paper className = "cardCenter" sx={{minWidth: "100%", minHeight: "100%"  }}>
+            <Typography component="h1" variant="h5" >
               New Category
             </Typography>
             <Box
@@ -41,6 +41,7 @@ export const CategoryTable = () => {
                 await getAllCategories(setCategories);
               }}
               noValidate
+              padding = "1vh 1vw"
             >
               <TextField
                 margin="normal"
@@ -63,8 +64,8 @@ export const CategoryTable = () => {
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={8} sx={{ minWidth: "100%", minHeight: "100%" }}>
-          <Paper className="cardCenter">
+        <Grid item xs={12} sm={8} >
+          <Paper className="cardCenter" sx={{ minWidth: "100%", minHeight: "100%" }}>
             <TableContainer>
               <Table>
                 <TableHead>
