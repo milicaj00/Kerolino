@@ -12,7 +12,7 @@ productRoutes.post('/add-product', upload_img, createProduct)
 productRoutes.put('/edit-product', upload_img, editProduct)
 productRoutes.delete('/delete-product/:productId', deleteProduct)
 
-productRoutes.put('/find-product/:filter', findProduct)
+productRoutes.get('/find-product/:filter', findProduct)
 
 
 export default productRoutes;

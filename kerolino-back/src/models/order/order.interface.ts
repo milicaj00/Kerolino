@@ -10,7 +10,8 @@ interface IOrder {
 }
 
 export interface OrderModelInterface extends IOrder, mongoose.Document {
-    createdAt: Date
+    createdAt: Date,
+    updatedAt: Date
 }
 
 // export interface OrderModelInterface extends mongoose.Model<OrderDoc> {
