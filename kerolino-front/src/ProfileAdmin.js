@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Tabs, Grid, Tab, Typography } from "@mui/material";
 import { ProductTable } from "./ProductTable";
 import { OrdersTable } from "./OrdersTable";
+import { CategoryTable } from "./CategoryTable";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -39,7 +40,8 @@ export const ProfileAdmin = () => {
             onChange={handleChange}
           >
             <Tab label="Products" value={0} />
-            <Tab label="Orderers" />
+            <Tab label="Categories" />
+            <Tab label="Orders" />
           </Tabs>
         </Grid>
         <Grid item xs={12} md={2} sx={{ display: { xs: "none", md: "flex" } }}>
@@ -52,18 +54,21 @@ export const ProfileAdmin = () => {
             sx={{ borderRight: 1, borderColor: "divider", width: "100%" }}
           >
             <Tab label="Products" />
-            <Tab label="Orderers" />
+            <Tab label="Categories" />
+            <Tab label="Orders" />
           </Tabs>
         </Grid>
         <Grid item xs={12} md={10}>
           <TabPanel value={tab} index={0}>
-            <Typography>Products</Typography>
             <ProductTable />
           </TabPanel>
 
           <TabPanel value={tab} index={1}>
-            <Typography>Orderers</Typography>
             <OrdersTable />
+          </TabPanel>
+
+          <TabPanel value={tab} index={2}>
+            <CategoryTable />
           </TabPanel>
         </Grid>
       </Grid>

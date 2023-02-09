@@ -14,7 +14,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { getAllProducts } from "./Api";
+import { getAllProducts, getAllCategories } from "./Api";
 import { useNavigate } from "react-router-dom";
 
 const PUTANJA = "http://localhost:8000/";
@@ -27,7 +27,7 @@ export const Shop = () => {
 
   useEffect(() => {
     getAllProducts(setProducts);
-    setCategories([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    getAllCategories(setCategories);
   }, []);
 
   return (
@@ -63,9 +63,9 @@ export const Shop = () => {
             <MenuItem key={-1} value={-1}>
               Choose Category
             </MenuItem>
-            {categories.map((c, i) => (
-              <MenuItem key={i} value={i}>
-                {c}
+            {categories.map(c => (
+              <MenuItem key={c._id} value={c._id}>
+                {c.name}
               </MenuItem>
             ))}
           </TextField>

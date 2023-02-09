@@ -49,7 +49,7 @@ export const OrdersTable = () => {
                 color="text.secondary"
                 sx={{ marginRight: "2%"}}
               >
-                {o.createdAt}
+                {o?.date}
 
               </Typography>
             </AccordionSummary>

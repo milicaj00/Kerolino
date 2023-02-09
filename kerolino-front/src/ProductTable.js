@@ -81,7 +81,7 @@ export const ProductTable = () => {
                     <TableCell>{p.name}</TableCell>
                     <TableCell>{p.price}</TableCell>
                     <TableCell>{p.amount}</TableCell>
-                    <TableCell>{p.price}</TableCell>
+                    <TableCell>{p?.category?.name}</TableCell>
                     <TableCell>
                       <Button
                         size="small"

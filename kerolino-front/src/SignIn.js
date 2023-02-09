@@ -4,14 +4,6 @@ import { NavLink } from "react-router-dom";
 import { signIn } from "./Api";
 
 export const SignIn = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
 
   return (
     <Box className="marginS">
