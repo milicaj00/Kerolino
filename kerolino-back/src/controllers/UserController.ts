@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
+import { CustomRequest, generateAccessToken } from "../auth/user_auth";
 import { Role } from "../models/user/role";
 import User from "../models/user/user.model";
 import { v_edit, v_login, v_register } from "../validations/user/validate-user";
 
 export const createUser = async (req: Request, res: Response) => {
-
-    //PROVERE !!!
 
     if (!v_register(req.body)) {
         return res.status(403).json({ message: 'not valid inputs' })
@@ -25,6 +24,12 @@ export const createUser = async (req: Request, res: Response) => {
         is_seller: false
     })
 
+    const access_token = generateAccessToken({
+        _id: user._id,
+        email: user.email,
+        is_seller: user.is_seller,
+    })
+
     return await user.save()
         .then(() => res.status(200).json({
             _id: user._id,
@@ -36,6 +41,7 @@ export const createUser = async (req: Request, res: Response) => {
             address: user.address,
             city: user.city,
             phoneNum: user.phoneNum,
+            access_token
         }))
         .catch(err => {
             console.log(err)
@@ -49,14 +55,15 @@ export const createUser = async (req: Request, res: Response) => {
 }
 
 export const getUser = async (req: Request, res: Response) => {
-    const { userId } = req.params
+
+    const userId = res.locals.user._id
 
     if (!userId) {
-        return res.status(422).json({ message: 'you must enter id' })
+        return res.status(500).json({ message: 'token id' })
     }
 
     try {
-        const user = await User.findById(userId)//.populate('myProducts')
+        const user = await User.findById(userId)
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }
@@ -80,11 +87,11 @@ export const getUser = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body
-    //PROVERE
 
     if (!v_login(req.body)) {
         return res.status(403).json({ message: 'not valid inputs' })
     }
+
     try {
         const user = await User.findOne({ email })
         if (!user) {
@@ -93,6 +100,11 @@ export const login = async (req: Request, res: Response) => {
         if (!await user.comparePassword(password)) {
             return res.status(406).json({ message: 'Wrong password' })
         }
+        const access_token = generateAccessToken({
+            _id: user._id,
+            email: user.email,
+            is_seller: user.is_seller,
+        })
         return res.status(200).json({
             _id: user._id,
             fullName: user.fullName,
@@ -103,6 +115,7 @@ export const login = async (req: Request, res: Response) => {
             address: user.address,
             city: user.city,
             phoneNum: user.phoneNum,
+            access_token
         })
     }
     catch (err: any) {
@@ -113,11 +126,10 @@ export const login = async (req: Request, res: Response) => {
 
 export const editUser = async (req: Request, res: Response) => {
 
-    //PROVERE !!!
-    const { userId } = req.body
+    const userId = res.locals.user._id
 
     if (!userId) {
-        return res.status(422).json({ message: 'you must enter id' })
+        return res.status(500).json({ message: 'token id' })
     }
 
     if (!v_edit(req.body)) {
@@ -146,10 +158,10 @@ export const editUser = async (req: Request, res: Response) => {
 }
 
 export const deleteUser = async (req: Request, res: Response) => {
-    const { userId } = req.params
+    const userId = res.locals.user._id
 
     if (!userId) {
-        return res.status(422).json({ message: 'you must enter id' })
+        return res.status(500).json({ message: 'token id' })
     }
 
     try {

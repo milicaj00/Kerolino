@@ -15,6 +15,11 @@ export const createProduct = async (req: Request, res: Response) => {
     if (!req.file) {
         return res.status(403).json({ message: 'you must enter an image' })
     }
+
+    if (!res.locals.user.is_seller) {
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
+
     try {
         const product = new Product({
             _id: new mongoose.Types.ObjectId(),
@@ -81,6 +86,10 @@ export const editProduct = async (req: Request, res: Response) => {
         return res.status(403).json({ message: 'not valid inputs' })
     }
 
+    if (!res.locals.user.is_seller) {
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
+
     //PROVERE !!!
     const { productId } = req.body
 
@@ -114,6 +123,10 @@ export const editProduct = async (req: Request, res: Response) => {
 }
 
 export const deleteProduct = async (req: Request, res: Response) => {
+    if (!res.locals.user.is_seller) {
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
+
     const { productId } = req.params
 
     if (!productId) {

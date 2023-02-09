@@ -8,7 +8,11 @@ import { UserModelInterface } from "../models/user/user.interface";
 import dayjs from "dayjs";
 
 export const getMyOrders = async (req: Request, res: Response) => {
-    const id = req.params.id
+    const id = res.locals.user._id
+
+    if (!id) {
+        return res.status(500).json({ message: 'token id' })
+    }
     try {
         const orders = await Order.find({ buyer: id }).populate('product').select('-__v');
 
@@ -40,6 +44,10 @@ export const getMyOrders = async (req: Request, res: Response) => {
 }
 
 export const getAllOrders = async (req: Request, res: Response) => {
+
+    if (!res.locals.user.is_seller) {
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
 
     try {
         const orders = await Order.find({ sent: false }).populate('buyer').populate('product').select('-__v');
@@ -172,6 +180,10 @@ export const deleteOrder = async (req: Request, res: Response) => {
 }
 
 export const sendOrder = async (req: Request, res: Response) => {
+
+    if (!res.locals.user.is_seller) {
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
 
     const { orderId } = req.params
 
