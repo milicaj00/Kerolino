@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, TextField, Button, MenuItem } from "@mui/material";
-import { addProduct, getAllProducts, modifyProduct } from "./Api";
+import {
+  addProduct,
+  getAllCategories,
+  modifyProduct,
+} from "./Api";
 
-//KATEGORIJA DA SE DODA
 
 export const ProductForm = ({ product }) => {
   const [picture, setPicture] = useState("");
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    setCategories([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    console.log(product);
+    getAllCategories(setCategories);
+    console.log(product)
   }, []);
 
   return (
@@ -65,18 +68,18 @@ export const ProductForm = ({ product }) => {
         <TextField
           margin="dense"
           size="small"
-          name="category"
+          name="categoryId"
           variant="outlined"
           select
           fullWidth
-          defaultValue={-1}
+          defaultValue={product === null ? -1 : product.category._id}
         >
-          <MenuItem key={-1} value={-1}>
+          <MenuItem key={-1} value={-1} sx ={{display: 'none'}}> 
             Choose Category
           </MenuItem>
-          {categories.map((c, i) => (
-            <MenuItem key={i} value={i}>
-              {c}
+          {categories.map((c) => (
+            <MenuItem key={c._id} value={c._id}>
+              {c.name}
             </MenuItem>
           ))}
         </TextField>

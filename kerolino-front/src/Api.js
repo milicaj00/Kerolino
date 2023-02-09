@@ -6,6 +6,59 @@ export async function getAllOrders(setOrders) {
     .then((data) => {
       console.log(data.data.orders);
       setOrders(data.data.orders);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function getMyOrders(setOrders, id) {
+  return await axios
+    .get("http://localhost:8000/api/order/my-orders/" + id)
+    .then((data) => {
+      console.log(data.data.orders);
+      setOrders(data.data.orders);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function getAllCategories(setCategories) {
+  return await axios
+    .get("http://localhost:8000/api/category/get")
+    .then((data) => {
+      console.log(data.data.categories);
+      setCategories(data.data.categories);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function deleteCategory(id) {
+  return await axios
+    .delete("http://localhost:8000/api/category/delete/" + id)
+    .then((res) => {
+      console.log(res.data.message);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function addCategory(event) {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  await axios
+    .post("http://localhost:8000/api/category/add", {
+      name: data.get("name"),
+    })
+    .then((res) => {
+      console.log(res.data.message);
+    })
+    .catch((error) => {
+      console.log(error);
     });
 }
 
@@ -15,6 +68,9 @@ export async function getAllProducts(setProducts) {
     .then((data) => {
       console.log(data.data.products);
       setProducts(data.data.products);
+    })
+    .catch((error) => {
+      console.log(error);
     });
 }
 
@@ -74,7 +130,7 @@ export async function signIn(event) {
     .then((res) => {
       if (res.status === 200) {
         console.log(res.data);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem("user", JSON.stringify(res.data));
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -98,7 +154,7 @@ export async function signUp(event) {
     .then((res) => {
       if (res.status === 200) {
         console.log(res.data);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem("user", JSON.stringify(res.data));
         setTimeout(() => {
           window.location.reload();
         }, 1000);

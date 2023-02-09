@@ -6,14 +6,23 @@ import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
 import { ProfileAdmin } from "./ProfileAdmin";
 
-export const MyRoutes = ({user}) => {
-
+export const MyRoutes = ({ user }) => {
   return (
     <Routes>
       <Route path="/" element={<Shop />} />
       <Route
         path="/profile"
-        element={user ? <ProfileAdmin /> : <Navigate replace to="/signin" />}
+        element={
+          user ? (
+            !user.is_seller ? (
+              <ProfileAdmin />
+            ) : (
+              <Profile user = {user} />
+            )
+          ) : (
+            <Navigate replace to="/signin" />
+          )
+        }
       />
       <Route
         path="/signin"
