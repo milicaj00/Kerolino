@@ -6,23 +6,27 @@ import { BrowserRouter } from "react-router-dom";
 import { MyRoutes } from "./Route";
 import { Footer } from "./Footer";
 
-function App() {
-  const [user, setUser] = React.useState(null);
+import { provider } from "react-ioc";
+import { UserService } from "./store/UserService";
+import { UsersDataStore } from "./store/UserStore";
+import { observer } from "mobx-react-lite";
+import { useInstance } from "react-ioc";
 
-  React.useEffect(() => {
-    const u = JSON.parse(localStorage.getItem("user"));
-    setUser(u);
-  }, []);
-
-  return (
-    <>
-      <BrowserRouter>
-          <Navbar user={user} />
-          <MyRoutes user={user} />
-          {/* <Footer /> */}
-      </BrowserRouter>
-    </>
-  );
-}
+const App = provider(
+    UserService,
+    UsersDataStore
+)(
+    observer(() => {
+        return (
+            <>
+                <BrowserRouter>
+                    <Navbar />
+                    <MyRoutes />
+                    {/* <Footer /> */}
+                </BrowserRouter>
+            </>
+        );
+    })
+);
 
 export default App;

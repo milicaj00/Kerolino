@@ -5,30 +5,36 @@ import { Shop } from "./Shop";
 import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
 import { ProfileAdmin } from "./ProfileAdmin";
+import { UsersDataStore } from "./store/UserStore";
+import { observer } from "mobx-react-lite";
+import { useInstance } from "react-ioc";
 
-export const MyRoutes = ({ user }) => {
-  return (
-    <Routes>
-      <Route path="/" element={<Shop />} />
-      <Route
-        path="/profile"
-        element={
-          user ? (
-            !user.is_seller ? (
-              <ProfileAdmin />
-            ) : (
-              <Profile user = {user} />
-            )
-          ) : (
-            <Navigate replace to="/signin" />
-          )
-        }
-      />
-      <Route
-        path="/signin"
-        element={user ? <Navigate replace to="/" /> : <SignIn />}
-      />
-      <Route path="/signup" element={<SignUp />} />
-    </Routes>
-  );
-};
+export const MyRoutes = observer(() => {
+    const userStore = useInstance(UsersDataStore);
+    return (
+        <Routes>
+            <Route path="/" element={<Shop />} />
+            <Route
+                path="/profile"
+                element={
+                    userStore.user ? (
+                        !userStore.user.is_seller ? (
+                            <ProfileAdmin />
+                        ) : (
+                            <Profile user={userStore.user} />
+                        )
+                    ) : (
+                        <Navigate replace to="/signin" />
+                    )
+                }
+            />
+            <Route
+                path="/signin"
+                element={
+                    userStore.user ? <Navigate replace to="/" /> : <SignIn />
+                }
+            />
+            <Route path="/signup" element={<SignUp />} />
+        </Routes>
+    );
+});
