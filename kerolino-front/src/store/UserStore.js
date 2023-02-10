@@ -26,9 +26,7 @@ export class UsersDataStore {
                 this.state.user = response.data;
             });
         } catch (e) {
-            runInAction(() => {
-                throw Error(e);
-            });
+           
         }
     }
 
