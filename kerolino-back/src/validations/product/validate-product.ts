@@ -1,38 +1,61 @@
+import { NextFunction, Request, Response } from "express";
 import { ProductModelInterface } from "../../models/product/product.interface";
 
-export const v_create = (data: ProductModelInterface): boolean => {
+export const v_create = (req: Request, res: Response, next: NextFunction) => {
 
-    if (data.name === " " || data.name.length < 2) {
-        return false
+
+    if (!res.locals.user.is_seller) {
+        return res.status(401).json({ message: 'Unauthorized' })
     }
 
-    if (data.price < 1 || data.price >= 100000) {
-        return false
+    console.log(req.body)
+
+    if (!req.body.categoryId) {
+        return res.status(403).json({ message: 'categoryId not valid' })
     }
 
-    if (data.amount < 1 || data.amount >= 100000) {
-        return false
+    if (!req.file) {
+        return res.status(403).json({ message: 'you must enter an image' })
     }
 
-    return true
+    if (!req.body.name || req.body.name.length < 2) {
+        return res.status(406).json({ message: "name not valid" })
+    }
+
+    if (req.body.price < 1 || req.body.price >= 100000) {
+        return res.status(406).json({ message: "price not valid" })
+    }
+
+    if (req.body.amount < 1 || req.body.amount >= 100000) {
+        return res.status(406).json({ message: "amount not valid" })
+    }
+
+    next()
+
 }
 
-export const v_edit = (data: ProductModelInterface): boolean => {
 
-    if (data.name)
-        if (data.name === " " || data.name.length < 2) {
-            return false
-        }
+export const v_edit = (req: Request, res: Response, next: NextFunction) => {
 
-    if (data.price)
-        if (data.price < 1 || data.price >= 100000) {
-            return false
-        }
+    if (!res.locals.user.is_seller) {
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
 
-    if (data.amount)
-        if (data.amount < 1 || data.amount >= 100000) {
-            return false
-        }
+    if (!req.body.productId) {
+        return res.status(422).json({ message: 'you must enter id' })
+    }
 
-    return true
+    if (req.body.name && req.body.name.length < 2) {
+        return res.status(406).json({ message: "name not valid" })
+    }
+
+    if (req.body.price && (req.body.price < 1 || req.body.price >= 100000)) {
+        return res.status(406).json({ message: "price not valid" })
+    }
+
+    if (req.body.amount && (req.body.amount < 1 || req.body.amount >= 100000)) {
+        return res.status(406).json({ message: "amount not valid" })
+    }
+
+    next()
 }

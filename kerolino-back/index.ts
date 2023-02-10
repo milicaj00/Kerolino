@@ -8,7 +8,7 @@ import userRouter from "./src/routes/UserRoutes";
 import productRoutes from "./src/routes/ProductRoutes";
 import orderRoutes from "./src/routes/OrderRoutes";
 import categoryRoutes from "./src/routes/CategoryRoutes";
-
+import multer from "multer";
 
 mongoose.connect(process.env.MONGO_URL!, { retryWrites: true, w: 'majority' })
   .then(() => {
@@ -18,10 +18,19 @@ mongoose.connect(process.env.MONGO_URL!, { retryWrites: true, w: 'majority' })
     console.error("Error connecting to MongoDB", { error });
   })
 
+
 const app = express();
-app.use(json());
+
+
+app.use(express.json());
 app.use(cors())
 app.use(morgan("common"));
+
+app.use(express.static("uploads"));
+
+
+
+
 
 app.use('/api/user', userRouter)
 app.use('/api/product', productRoutes)

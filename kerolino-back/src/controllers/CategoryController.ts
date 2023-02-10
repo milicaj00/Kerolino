@@ -5,12 +5,11 @@ import Category from "../models/category/category.model"
 
 export const addCategory = async (req: Request, res: Response) => {
 
-
     if (!res.locals.user.is_seller) {
         return res.status(401).json({ message: 'Unauthorized' })
     }
 
-    if (req.body.name.length < 2) {
+    if (!req.body.name || req.body.name.length < 2) {
         res.status(422).json({ message: 'name is required' })
     }
 
@@ -40,3 +39,4 @@ export const deleteCategory = async (req: Request, res: Response) => {
         .then(c => res.status(200).json({ message: 'Success' }))
         .catch(err => res.status(500).json('Connection error'))
 }
+

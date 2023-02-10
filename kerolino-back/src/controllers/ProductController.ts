@@ -2,23 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import Product from "../models/product/product.model";
 import User from "../models/user/user.model";
-import { v_create, v_edit } from "../validations/product/validate-product";
 
 export const createProduct = async (req: Request, res: Response) => {
-    //PROVERE !!!
-    if (!v_create(req.body)) {
-        return res.status(403).json({ message: 'not valid inputs' })
-    }
-    if (!req.body.categoryId) {
-        return res.status(403).json({ message: 'not valid inputs' })
-    }
-    if (!req.file) {
-        return res.status(403).json({ message: 'you must enter an image' })
-    }
-
-    if (!res.locals.user.is_seller) {
-        return res.status(401).json({ message: 'Unauthorized' })
-    }
 
     try {
         const product = new Product({
@@ -67,35 +52,23 @@ export const getProduct = async (req: Request, res: Response) => {
     }
 }
 
-export const getAllProducts = async (req: Request, res: Response) => {
+// export const getAllProducts = async (req: Request, res: Response) => {
 
-    try {
-        const products = await Product.find().populate('category')
+//     try {
+//         const products = await Product.find().populate('category')
 
-        return res.status(200).json({ products })
-    }
-    catch (err: any) {
-        console.log(err)
-        return res.status(500).json({ message: 'Connection error' })
-    }
-}
+//         return res.status(200).json({ products })
+//     }
+//     catch (err: any) {
+//         console.log(err)
+//         return res.status(500).json({ message: 'Connection error' })
+//     }
+// }
 
 export const editProduct = async (req: Request, res: Response) => {
 
-    if (!v_edit(req.body)) {
-        return res.status(403).json({ message: 'not valid inputs' })
-    }
-
-    if (!res.locals.user.is_seller) {
-        return res.status(401).json({ message: 'Unauthorized' })
-    }
-
-    //PROVERE !!!
     const { productId } = req.body
 
-    if (!productId) {
-        return res.status(422).json({ message: 'you must enter id' })
-    }
 
     try {
         const product = await Product.findById(productId)
@@ -147,10 +120,12 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
 }
 
-
 export const findProduct = async (req: Request, res: Response) => {
 
-    const filter: string = req.params.filter
+    let filter: string = ''
+    if (typeof req.query.filter === 'string') {
+        filter = req.query.filter
+    }
 
     try {
         const products = await Product.find({ name: { $regex: filter } }).populate('category').select('-__v');
@@ -161,4 +136,50 @@ export const findProduct = async (req: Request, res: Response) => {
         console.log(err)
         return res.status(500).json({ message: 'Connection error' })
     }
+}
+
+export const filterProducts = async (req: Request, res: Response) => {
+
+    let name: string = ''
+    if (typeof req.query.name === 'string') {
+        name = req.query.name
+    }
+
+    const catId = req.query.catId
+
+    try {
+        let products = []
+        if (catId) {
+            products = await Product
+                .find({ name: { $regex: name, $options: 'i' }, category: catId })
+                .populate('category').select('-__v');
+        }
+        else {
+            products = await Product
+                .find({ name: { $regex: name, $options: 'i' } })
+                .populate('category').select('-__v');
+        }
+
+        return res.status(200).json({ products })
+    }
+    catch (err: any) {
+        console.log(err)
+        return res.status(500).json({ message: 'Connection error' })
+    }
+}
+
+export const findByCategory = async (req: Request, res: Response) => {
+
+    const category = req.params.categoryId
+
+    try {
+        const products = await Product.find({ category: category }).populate('category').select('-__v');
+
+        return res.status(200).json({ products })
+    }
+    catch (err: any) {
+        console.log(err)
+        return res.status(500).json({ message: 'Connection error' })
+    }
+
 }

@@ -7,6 +7,44 @@ import { ProductModelInterface } from "../models/product/product.interface";
 import { UserModelInterface } from "../models/user/user.interface";
 import dayjs from "dayjs";
 
+const make_product = (order: any) => {
+    return {
+        amount: order.amount,
+        name: 'name' in order.product && order.product.name,
+        image: 'image' in order.product && order.product.image,
+        price: 'price' in order.product && order.product.price
+    }
+}
+
+const make_order = (order: any, buyer: boolean = false) => {
+    let address = ""
+    if ('address' in order.buyer) {
+        address += order.buyer.address + ", "
+    }
+    if ('postNumber' in order.buyer) {
+        address += order.buyer.postNumber + " "
+    }
+    if ('city' in order.buyer) {
+        address += order.buyer.city + " "
+    }
+    return {
+        _id: order._id,
+        sent: order.sent,
+        product: order.product &&
+            [
+                make_product(order)
+            ],
+        date_ordered: dayjs(order.createdAt).format('DD-MM-YYYY HH:mm'),
+        date_sent: dayjs(order.updatedAt).format('DD-MM-YYYY HH:mm'),
+        buyer: buyer && {
+            fullName: 'fullName' in order.buyer ? order.buyer.fullName : "",
+            address: address,
+            phoneNumber: 'phoneNum' in order.buyer ? order.buyer.phoneNum : "",
+            email: 'email' in order.buyer ? order.buyer.email : "",
+        },
+    }
+}
+
 export const getMyOrders = async (req: Request, res: Response) => {
     const id = res.locals.user._id
 
@@ -14,26 +52,49 @@ export const getMyOrders = async (req: Request, res: Response) => {
         return res.status(500).json({ message: 'token id' })
     }
     try {
-        const orders = await Order.find({ buyer: id }).populate('product').select('-__v');
+        const orders = await Order.find({ buyer: id }).populate('product').sort({ createdAt: -1 }).select('-__v');
 
-        const all_orders = orders.map(order => {
+        // const all_orders = orders.map(order => {
 
-            return {
-                _id: order._id,
-                sent: order.sent,
-                product: order.product &&
-                {
-                    amount: order.amount,
-                    name: 'name' in order.product && order.product.name,
-                    image: 'image' in order.product && order.product.image,
-                    price: 'price' in order.product && order.product.price
-                },
-                date_ordered: dayjs(order.createdAt).format('DD-MM-YYYY HH:mm'),
-                date_sent: dayjs(order.updatedAt).format('DD-MM-YYYY HH:mm')
+        //     return {
+        //         _id: order._id,
+        //         sent: order.sent,
+        //         product: order.product &&
+        //         {
+        //             amount: order.amount,
+        //             name: 'name' in order.product && order.product.name,
+        //             image: 'image' in order.product && order.product.image,
+        //             price: 'price' in order.product && order.product.price
+        //         },
+        //         date_ordered: dayjs(order.createdAt).format('DD-MM-YYYY HH:mm'),
+        //         date_sent: dayjs(order.updatedAt).format('DD-MM-YYYY HH:mm')
+        //     }
+
+        // })
+
+        const all_orders: any = []
+
+        if (orders.length === 0) {
+            return res.status(200).json({ all_orders })
+        }
+
+        // let order = orders[0]
+
+        all_orders.push(make_order(orders[0]))
+
+        let j = 0
+
+        for (let i = 1; i < orders.length; i++) {
+            const date = dayjs(orders[i].createdAt).format('DD-MM-YYYY HH:mm')
+            const order = orders[i]
+            if (all_orders[j].date_ordered === date) {
+                all_orders[j].product.push(make_product(order))
             }
-
-        })
-
+            else {
+                j++;
+                all_orders.push(make_order(order))
+            }
+        }
 
         return res.status(200).json({ all_orders })
     }
@@ -52,41 +113,62 @@ export const getAllOrders = async (req: Request, res: Response) => {
     try {
         const orders = await Order.find({ sent: false }).populate('buyer').populate('product').select('-__v');
 
-        const all_orders = orders.map(order => {
-            // address: user.address + ", " + user.postNumber + " " + user.city,
+        // const all_orders = orders.map(order => {
+        //     // address: user.address + ", " + user.postNumber + " " + user.city,
 
-            let address = ""
-            if ('address' in order.buyer) {
-                address += order.buyer.address + ", "
-            }
-            if ('postNumber' in order.buyer) {
-                address += order.buyer.postNumber + " "
-            }
-            if ('city' in order.buyer) {
-                address += order.buyer.city + " "
-            }
+        //     let address = ""
+        //     if ('address' in order.buyer) {
+        //         address += order.buyer.address + ", "
+        //     }
+        //     if ('postNumber' in order.buyer) {
+        //         address += order.buyer.postNumber + " "
+        //     }
+        //     if ('city' in order.buyer) {
+        //         address += order.buyer.city + " "
+        //     }
 
-            return {
-                _id: order._id,
-                sent: order.sent,
-                buyer: {
-                    fullName: 'fullName' in order.buyer ? order.buyer.fullName : "",
-                    address: address,
-                    phoneNumber: 'phoneNum' in order.buyer ? order.buyer.phoneNum : "",
-                    email: 'email' in order.buyer ? order.buyer.email : "",
-                },
-                product: order.product &&
-                {
-                    amount: order.amount,
-                    name: 'name' in order.product && order.product.name,
-                    image: 'image' in order.product && order.product.image,
-                    price: 'price' in order.product && order.product.price
-                },
-                date: dayjs(order.createdAt).format('DD-MM-YYYY HH:mm')
-                //dayjs('2019-01-25').format('[YYYYescape] YYYY-MM-DDTHH:mm:ssZ[Z]') 
-            }
+        //     return {
+        //         _id: order._id,
+        //         sent: order.sent,
+        //         buyer: {
+        //             fullName: 'fullName' in order.buyer ? order.buyer.fullName : "",
+        //             address: address,
+        //             phoneNumber: 'phoneNum' in order.buyer ? order.buyer.phoneNum : "",
+        //             email: 'email' in order.buyer ? order.buyer.email : "",
+        //         },
+        //         product: order.product &&
+        //         {
+        //             amount: order.amount,
+        //             name: 'name' in order.product && order.product.name,
+        //             image: 'image' in order.product && order.product.image,
+        //             price: 'price' in order.product && order.product.price
+        //         },
+        //         date: dayjs(order.createdAt).format('DD-MM-YYYY HH:mm')
+        //         //dayjs('2019-01-25').format('[YYYYescape] YYYY-MM-DDTHH:mm:ssZ[Z]') 
+        //     }
 
-        })
+        // })
+
+        const all_orders: any = []
+        if (orders.length === 0) {
+            return res.status(200).json({ all_orders })
+        }
+
+        all_orders.push(make_order(orders[0], true))
+
+        let j = 0
+
+        for (let i = 1; i < orders.length; i++) {
+            const date = dayjs(orders[i].createdAt).format('DD-MM-YYYY HH:mm')
+            const order = orders[i]
+            if (all_orders[j].date_ordered === date) {
+                all_orders[j].product.push(make_product(order))
+            }
+            else {
+                j++;
+                all_orders.push(make_order(order, true))
+            }
+        }
 
         return res.status(200).json({ all_orders })
     }
