@@ -8,6 +8,7 @@ import { ProfileAdmin } from "./ProfileAdmin";
 import { UsersDataStore } from "./store/UserStore";
 import { observer } from "mobx-react-lite";
 import { useInstance } from "react-ioc";
+import { CheckOut } from "./CheckOut";
 
 export const MyRoutes = observer(() => {
     const userStore = useInstance(UsersDataStore);
@@ -18,7 +19,7 @@ export const MyRoutes = observer(() => {
                 path="/profile"
                 element={
                     userStore.user ? (
-                        !userStore.user.is_seller ? (
+                        userStore.user.is_seller ? (
                             <ProfileAdmin />
                         ) : (
                             <Profile user={userStore.user} />
@@ -35,6 +36,7 @@ export const MyRoutes = observer(() => {
                 }
             />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/checkout" element={<CheckOut />} />
         </Routes>
     );
 });

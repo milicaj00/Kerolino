@@ -9,24 +9,27 @@ import { Footer } from "./Footer";
 import { provider } from "react-ioc";
 import { UserService } from "./store/UserService";
 import { UsersDataStore } from "./store/UserStore";
+import { BagStore } from "./store/BagStore";
+
 import { observer } from "mobx-react-lite";
 import { useInstance } from "react-ioc";
 
 const App = provider(
-    UserService,
-    UsersDataStore
+  UserService,
+  UsersDataStore,
+  BagStore
 )(
-    observer(() => {
-        return (
-            <>
-                <BrowserRouter>
-                    <Navbar />
-                    <MyRoutes />
-                    {/* <Footer /> */}
-                </BrowserRouter>
-            </>
-        );
-    })
+  observer(() => {
+    return (
+      <>
+        <BrowserRouter>
+          <Navbar />
+          <MyRoutes />
+          {/* <Footer /> */}
+        </BrowserRouter>
+      </>
+    );
+  })
 );
 
 export default App;

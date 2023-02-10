@@ -1,7 +1,7 @@
-import { Box, Typography, TextField, Button } from "@mui/material";
+import { Box, Typography, TextField, Button, Grid } from "@mui/material";
 import React from "react";
 
-//SUBMIT 
+//SUBMIT
 
 export const DeliveryDataForm = () => {
   return (
@@ -24,6 +24,44 @@ export const DeliveryDataForm = () => {
           sx={{ mt: 1 }}
         >
           <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                name="name"
+                required
+                fullWidth
+                id="name"
+                label="First Name"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="surname"
+                label="Last Name"
+                name="surname"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                type="number"
+                id="phonNum"
+                label="Phone Number"
+                name="phoneNum"
+              />
+            </Grid>
             <Grid item xs={12}>
               <TextField name="address" required fullWidth label="Address" />
             </Grid>
@@ -36,14 +74,6 @@ export const DeliveryDataForm = () => {
                 fullWidth
                 label="Post Number"
                 name="postNumber"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="phoneNum"
-                required
-                fullWidth
-                label="Phone Number"
               />
             </Grid>
           </Grid>

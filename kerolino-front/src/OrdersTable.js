@@ -12,12 +12,15 @@ import {
   ListItem,
   Paper,
   Typography,
+  CardMedia,
+  CardContent,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getAllOrders } from "./Api";
+import { getAllOrders, sendOrder } from "./Api";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+
+const PUTANJA = "http://localhost:8000/";
 
 export const OrdersTable = () => {
   const [orders, setOrders] = useState([]);
@@ -66,41 +69,57 @@ export const OrdersTable = () => {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "space-evenly",
                   }}
                 >
-                  <Typography fontWeight="500" >{o.buyer?.email}</Typography>
-                  <Typography fontWeight="500" >{o.buyer?.phoneNumber}</Typography>
-                  <Typography  fontWeight="500" sx={{ textTransform: "capitalize" }}>
+                  <Typography fontWeight="500">{o.buyer?.email}</Typography>
+                  <Typography fontWeight="500">
+                    {o.buyer?.phoneNumber}
+                  </Typography>
+                  <Typography
+                    fontWeight="500"
+                    sx={{ textTransform: "capitalize" }}
+                  >
                     {o.buyer?.address}
                   </Typography>
                 </Grid>
 
                 {/* <Grid item xs={12} md={6}>
-                  <Box textAlign="center">
-                    <Typography mb={1} textAlign="center" fontWeight="500">
-                      {" "}
-                    </Typography>
-                    <Grid container spacing={2} justifyContent="center" mb={1}>
-                      {evidencija?.intenziteti?.map((e, i) => (
-                        <Grid item xs={12} md={2} key={i}>
-                          <Card
-                            className="cardShadow"
-                            sx={{ padding: "1vh", textAlign: "justify" }}
-                          >
-                            <Typography>
-                              Datum: {evidencija.datumi[i]}
-                            </Typography>
-                            <Typography>
-                              Tip: {evidencija.tipTreninga[i]}
-                            </Typography>
-                            <Typography>Intenzitet: {e}</Typography>
-                          </Card>
-                        </Grid> 
-                      ))}
-                      </Grid>         
+                  {o?.product?.map((p) => (
+                    <Card sx={{ display: "flex" }}>
+                      <CardMedia
+                        component="img"
+                        sx={{ width: 151 }}
+                        image={PUTANJA + p?.image}
+                        alt={p?.name}
+                      />
+                      <Box sx={{ display: "flex", flexDirection: "column" }}>
+                        <CardContent sx={{ flex: "1 0 auto" }}>
+                          <Typography> {p?.name}</Typography>
+                          <Typography>Amount {p?.amount}</Typography>
+                          <Typography>Price: {p?.price}</Typography>
+                        </CardContent>
                       </Box>
-                </Grid>*/}
+                    </Card>
+                  ))}
+                </Grid> */}
+
+                <Grid item xs={12} md={6}>
+                  <Card variant = "outlined" sx={{ display: "flex", m: "2%" }}>
+                    <CardMedia
+                      component="img"
+                      sx={{ width: "30%" }}
+                      image={PUTANJA + o?.product?.image}
+                      alt={o?.product?.name}
+                    />
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <CardContent sx={{ flex: "1 0 auto" }}>
+                        <Typography>Name: {o?.product?.name}</Typography>
+                        <Typography>Amount: {o?.product?.amount}</Typography>
+                        <Typography>Price: {o?.product?.price}</Typography>
+                      </CardContent>
+                    </Box>
+                  </Card>
+                </Grid>
               </Grid>
             </AccordionDetails>
           </Accordion>
@@ -116,7 +135,10 @@ export const OrdersTable = () => {
             <IconButton
               disableRipple={true}
               sx={{ p: 0, color: "green" }}
-              // onClick={() => potvrdiZahtev(z.idZahteva)}
+              onClick={async () => {
+                await sendOrder(o._id);
+                await getAllOrders(setOrders);
+              }}
             >
               <CheckCircleIcon sx={{ fontSize: "1.5em" }} />
             </IconButton>
