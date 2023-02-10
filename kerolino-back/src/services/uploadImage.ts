@@ -33,6 +33,8 @@ var uploadSingle = upload.single('image');
 export const upload_img = (req: any, res: any, next: any) => {
     uploadSingle(req, res, (err) => {
 
+        console.log(err)
+
         if (err) return res.status(500).send({ success: false, message: 'Only image are allowed' })
 
         const file = req.file;

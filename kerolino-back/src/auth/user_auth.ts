@@ -18,6 +18,7 @@ export const generateAccessToken = (user: Object) => {
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        console.log(req.body)
         const token = req.header('Authorization')?.replace('Bearer ', '');
 
         if (!token) {
@@ -34,9 +35,9 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
                 if (user_token)
                     res.locals.user = user_token;
 
-                       // (req as CustomRequest).token = user_token;
+                // (req as CustomRequest).token = user_token;
 
-                return next();
+                next();
             });
 
         }

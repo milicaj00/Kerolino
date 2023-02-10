@@ -1,28 +1,70 @@
-import { NextFunction, Request, Response } from "express";
+import {  Request, Response } from "express";
 import mongoose from "mongoose";
-import { CustomRequest, generateAccessToken } from "../auth/user_auth";
-import { Role } from "../models/user/role";
+import {  generateAccessToken } from "../auth/user_auth";
+
 import User from "../models/user/user.model";
-import { v_edit, v_login, v_register } from "../validations/user/validate-user";
 
 export const createUser = async (req: Request, res: Response) => {
-
-    if (!v_register(req.body)) {
-        return res.status(403).json({ message: 'not valid inputs' })
-    }
 
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         surname: req.body.surname,
         email: req.body.email,
-        password: req.body.password,
         address: req.body.address,
         postNumber: req.body.postNumber,
         city: req.body.city,
         phoneNum: req.body.phoneNum,
         is_seller: false
     })
+
+
+    return await user.save()
+        .then(() => res.status(200).json({
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            is_seller: user.is_seller,
+            fullAddress: user.address + ", " + user.postNumber + " " + user.city,
+            postNumber: user.postNumber,
+            address: user.address,
+            city: user.city,
+            phoneNum: user.phoneNum,
+        }))
+        .catch(err => {
+            console.log(err)
+            if (err.code == 11000 && err.keyValue?.email == req.body.email) {
+                res.status(500).json({ message: 'User already exists' })
+            }
+            else {
+                res.status(500).json({ message: 'Connection error' })
+            }
+        })
+}
+
+
+export const register = async (req: Request, res: Response) => {
+
+    let user = await User.findOne({ email: req.body.email, password: null })
+
+    if (user) {
+        user.set(req.body)
+    }
+    else {
+
+        user = new User({
+            _id: new mongoose.Types.ObjectId(),
+            name: req.body.name,
+            surname: req.body.surname,
+            email: req.body.email,
+            password: req.body.password,
+            address: req.body.address,
+            postNumber: req.body.postNumber,
+            city: req.body.city,
+            phoneNum: req.body.phoneNum,
+            is_seller: false
+        })
+    }
 
     const access_token = generateAccessToken({
         _id: user._id,
@@ -31,7 +73,7 @@ export const createUser = async (req: Request, res: Response) => {
     })
 
     return await user.save()
-        .then(() => res.status(200).json({
+        .then((user) => res.status(200).json({
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
@@ -88,9 +130,6 @@ export const getUser = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body
 
-    if (!v_login(req.body)) {
-        return res.status(403).json({ message: 'not valid inputs' })
-    }
 
     try {
         const user = await User.findOne({ email })
@@ -127,14 +166,6 @@ export const login = async (req: Request, res: Response) => {
 export const editUser = async (req: Request, res: Response) => {
 
     const userId = res.locals.user._id
-
-    if (!userId) {
-        return res.status(500).json({ message: 'token id' })
-    }
-
-    if (!v_edit(req.body)) {
-        return res.status(403).json({ message: 'not valid inputs' })
-    }
 
     try {
         const user = await User.findById(userId)

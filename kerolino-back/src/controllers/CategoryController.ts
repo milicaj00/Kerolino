@@ -40,3 +40,4 @@ export const deleteCategory = async (req: Request, res: Response) => {
         .then(c => res.status(200).json({ message: 'Success' }))
         .catch(err => res.status(500).json('Connection error'))
 }
+
