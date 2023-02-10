@@ -4,8 +4,6 @@ import Product from "../models/product/product.model";
 import User from "../models/user/user.model";
 
 export const createProduct = async (req: Request, res: Response) => {
-    
-   
 
     try {
         const product = new Product({
