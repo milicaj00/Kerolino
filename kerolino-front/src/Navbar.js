@@ -28,6 +28,7 @@ import { useInstance } from "react-ioc";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import { BagStore } from "./store/BagStore";
 
+
 const PUTANJA = "http://localhost:8000/";
 
 export const Navbar = observer(() => {
@@ -217,15 +218,15 @@ export const Navbar = observer(() => {
                 <CardMedia
                   component="img"
                   sx={{ width: "25%" }}
-                  image={PUTANJA + p.image}
+                  image={PUTANJA + p.pr.image}
                   alt={p.name}
                 />
 
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <CardContent>
-                    <Typography>Name: {p.name}</Typography>
-                    {/* <Typography>Amount: {o?.product?.amount}</Typography> */}
-                    <Typography>Price: {p?.price}</Typography>
+                    <Typography>Name: {p.pr.name}</Typography>
+                    <Typography>Amount: {p?.amount}</Typography>
+                    <Typography>Price: {p.pr?.price}</Typography>
                   </CardContent>
                 </Box>
               </Card>

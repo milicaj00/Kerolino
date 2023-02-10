@@ -1,39 +1,68 @@
 import { makeAutoObservable, runInAction } from "mobx";
 
 export class BagStore {
-  state = {
-    product: [],
-  };
+    state = {
+        product: []
+    };
 
-  constructor() {
-    makeAutoObservable(this, undefined, { autoBind: true });
-  }
-
-  get product() {
-    return this.state.product;
-  }
-
-  async addProduct(p) {
-    try {
-      runInAction(() => {
-        this.state.product.push(p);
-      });
-    } catch (e) {
-      runInAction(() => {
-        throw Error(e);
-      });
+    constructor() {
+        makeAutoObservable(this, undefined, { autoBind: true });
+        this.getProducts();
     }
-  }
-  async removeProduct(p) {
-    try {
-      const tmp = this.state.product.filter((p1) => p1._id !== p._id);
-      runInAction(() => {
-        this.state.product = tmp;
-      });
-    } catch (e) {
-      runInAction(() => {
-        throw Error(e);
-      });
+
+    get product() {
+        return this.state.product;
     }
-  }
+
+    async getProducts() {
+        try {
+            const prod = JSON.parse(localStorage.getItem("products"));
+            runInAction(() => {
+                this.state.product = prod ? prod : [];
+            });
+        } catch (e) {
+            runInAction(() => {
+                throw Error(e);
+            });
+        }
+    }
+
+    addProduct(p) {
+        try {
+            runInAction(() => {
+                let found = false;
+                for (let i = 0; i < this.state.product.length; i++) {
+                    if (this.state.product[i].pr._id === p._id) {
+                        this.state.product[i].amount += 1;
+                        found = true;
+                        return;
+                    }
+                }
+                if (!found) {
+                    this.state.product.push({
+                        pr: p,
+                        productId: p._id,
+                        amount: 1
+                    });
+                }
+                localStorage.setItem("products", JSON.stringify(this.product));
+            });
+        } catch (e) {
+            runInAction(() => {
+                throw Error(e);
+            });
+        }
+    }
+    removeProduct(p) {
+        try {
+            const tmp = this.state.product.filter(p1 => p1._id !== p._id);
+            runInAction(() => {
+                this.state.product = tmp;
+            });
+        } catch (e) {
+            runInAction(() => {
+                throw Error(e);
+            });
+        }
+    }
 }
