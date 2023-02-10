@@ -13,7 +13,7 @@ import {
 import React, { Fragment, useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ProductForm } from "./ProductForm";
-import { deleteProduct, getAllProducts } from "./Api";
+import { deleteProduct, findProducts } from "./Api";
 
 export const ProductTable = () => {
   const [products, setProducts] = useState([]);
@@ -29,7 +29,7 @@ export const ProductTable = () => {
   };
 
   useEffect(() => {
-    getAllProducts(setProducts);
+    findProducts(setProducts);
   }, []);
 
   return (
@@ -39,7 +39,7 @@ export const ProductTable = () => {
         onClose={async () => {
           await handleChange(false);
           await setProduct(null);
-          await getAllProducts(setProducts);
+          await findProducts(setProducts);
         }}
       >
         <ProductForm product={product} />
@@ -48,7 +48,7 @@ export const ProductTable = () => {
         open={newproduct}
         onClose={async () => {
           await handleNewProduct(false);
-          await getAllProducts(setProducts);
+          await findProducts(setProducts);
         }}
       >
         <ProductForm product={product} />
@@ -101,7 +101,7 @@ export const ProductTable = () => {
                         color="error"
                         onClick={async () => {
                           await deleteProduct(p._id);
-                          await getAllProducts(setProducts);
+                          await findProducts(setProducts);
                         }}
                         startIcon={<DeleteIcon />}
                       >

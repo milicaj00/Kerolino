@@ -14,7 +14,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { getAllProducts, getAllCategories, findProducts } from "./Api";
+import { getAllCategories, findProducts } from "./Api";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useInstance } from "react-ioc";
@@ -26,11 +26,22 @@ export const Shop = observer(() => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
+  const [filterCategory, setCategory] = useState("");
+  const [filterName, setName] = useState("");
+
+  const handleChangeCategory = (c) => {
+    setCategory(c);
+  };
+
+  const handleChangeName = (n) => {
+    setName(n);
+  };
+
   let navigate = useNavigate();
-  const bagStore = useInstance(BagStore)
+  const bagStore = useInstance(BagStore);
 
   useEffect(() => {
-    getAllProducts(setProducts);
+    findProducts(setProducts);
     getAllCategories(setCategories);
   }, []);
 
@@ -41,8 +52,10 @@ export const Shop = observer(() => {
           item
           xs={12}
           sm={8}
-          component="form"
-          onSubmit={async (event) => await findProducts(event, setProducts)}
+          onChange={async (event) => {
+            handleChangeName(event.name);
+            await findProducts(setProducts, event.name, filterCategory);
+          }}
         >
           <TextField
             size="small"
@@ -67,6 +80,10 @@ export const Shop = observer(() => {
             select
             fullWidth
             defaultValue={-1}
+            onChange={async (event) => {
+              handleChangeCategory(event.value);
+              await findProducts(setProducts, filterName, event.value);
+            }}
           >
             <MenuItem key={-1} value={-1}>
               Choose Category
@@ -90,7 +107,7 @@ export const Shop = observer(() => {
             xl={3}
             className="cardCenter"
           >
-            <Card sx={{ minWidth: "100%"}}>
+            <Card sx={{ minWidth: "100%" }}>
               <CardMedia
                 component="img"
                 image={PUTANJA + p.image}
@@ -101,6 +118,9 @@ export const Shop = observer(() => {
                   {p.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
+                  Amount: {p.amount}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
                   Cena: {p.price}
                 </Typography>
               </CardContent>
@@ -108,6 +128,7 @@ export const Shop = observer(() => {
                 <Button
                   size="small"
                   color="primary"
+                  disabled = {p.amount === 0}
                   onClick={() => bagStore.addProduct(p)}
                 >
                   Add to bag

@@ -1,16 +1,30 @@
 // import axios from "axios";
 import axiosInstance from "./api/axiosInstance";
 
+export async function addOrder(buyerId, products) {
+  await axiosInstance
+    .post("/api/order/add-order", {
+      buyerId,
+      products,
+    })
+    .then((res) => {
+      console.log(res.data.message);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 export async function sendOrder(id) {
-    await axiosInstance
-      .put("/api/order/send-order/" + id)
-      .then((res) => {
-        console.log(res.data.message);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  await axiosInstance
+    .put("/api/order/send-order/" + id)
+    .then((res) => {
+      console.log(res.data.message);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 
 export async function getAllOrders(setOrders) {
   return await axiosInstance
@@ -74,24 +88,19 @@ export async function addCategory(event) {
     });
 }
 
-
-export async function findProducts(event, setProducts) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    return await axiosInstance
-      .get("/api/product/find-product/"+data.get("filter"))
-      .then((data) => {
-        console.log(data.data.products);
-        setProducts(data.data.products);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-export async function getAllProducts(setProducts) {
+export async function findProducts(
+  setProducts,
+  filterName = "",
+  filterCategory = ""
+) {
+  const filter = "";
+  console.log("filterName", filterName);
+  console.log("filterCategory", filterCategory);
+  if (filterName !== "") filter = filter + "?name=" + filterName;
+  if (filterCategory !== "") filter = filter + "?catId=" + filterCategory;
+  console.log(filter);
   return await axiosInstance
-    .get("/api/product/all-products")
+    .get("/api/product/filter-products" + filter)
     .then((data) => {
       console.log(data.data.products);
       setProducts(data.data.products);
