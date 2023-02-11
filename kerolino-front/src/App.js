@@ -25,7 +25,7 @@ const App = provider(
         <BrowserRouter>
           <Navbar />
           <MyRoutes />
-          {/* <Footer /> */}
+          <Footer />
         </BrowserRouter>
       </>
     );
