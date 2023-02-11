@@ -46,7 +46,7 @@ const About = () => {
             <Box sx={{ my: "10vh" }}>
                 <Box
                     component="img"
-                    src="http://onewellnessnis.rs/wp-content/uploads/2017/03/One-wellness-TERETANA-1-1024x682.jpg"
+                    src="http://localhost:8000/about-horisontal-image.jpg"
                     alt="main image"
                     width={"100vw"}
                     height="70vh"
@@ -62,20 +62,19 @@ const About = () => {
             >
                 <Box
                     component="img"
-                    src="http://onewellnessnis.rs/wp-content/uploads/2017/03/One-wellness-TERETANA-1-1024x682.jpg"
+                    src="http://localhost:8000/about-second-image.webp"
                     alt="secondary image"
                     width={{ sm: "100vw", md: "40vw" }}
                     height="65vh"
-                    sx={{m:'5%'}}
+                    sx={{ m: "5%" }}
                 />
                 <Box
                     sx={{
                         width: { sm: "100vw", md: "40vw" },
-                        p: "5%",
-                        
+                        p: "5%"
                     }}
                 >
-                    <Typography variant="h6">
+                    <Typography variant="text.secondary">
                         Teretana RDLGym počela je sa radom u februaru 2015.
                         godine, kada smo pod istim krovom okupili najbolje
                         stručnjake u regionu kako bismo svim našim klijentima
@@ -85,13 +84,13 @@ const About = () => {
                         Srbiji ali i u zemljama u regionu.
                     </Typography>
 
-                    <Typography variant="h6">
+                    <Typography variant="text.secondary">
                         Ne pravimo nikakav kompromis kada je u pitanju oprema
                         koju koristimo u poslu i uvek odlučno biramo da budemo
                         najbolji i pružimo najbolje.
                     </Typography>
 
-                    <Typography variant="h6">
+                    <Typography variant="text.secondary">
                         Zato ćete kod nas vežbati na najsavremenijim spravama iz
                         TechnoGym porodice, a svi naši partneri sa kojima ćete
                         se susreti u teretani RDLGym će doprineti vašem
@@ -99,7 +98,7 @@ const About = () => {
                         a to su: Jana, Proteini.si, Red Bull, Nike i Nivea.
                     </Typography>
 
-                    <Typography variant="h6">
+                    <Typography variant="text.secondary">
                         Naša misija je da pružimo najbolju uslugu i ostvarimo
                         neprikosnovene rezultate sa svim klijentima koji nam
                         ukazuju svoje dragoceno poverenje i da uvek pružimo i
@@ -107,7 +106,7 @@ const About = () => {
                         već i savetnici i posvećeni motivatori.
                     </Typography>
 
-                    <Typography mb={4} variant="h6">
+                    <Typography mb={4} variant="text.secondary">
                         Od kako postojimo naša vizija je ista – da budemo
                         sinonim za teretanu koja je ubedljivo najbolja po svim
                         svetskim standardima i koji konstantno diktira nove
