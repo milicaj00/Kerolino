@@ -55,7 +55,7 @@ export class BagStore {
   }
   removeProduct(p) {
     try {
-      const tmp = this.state.product.filter((p1) => p1._id !== p._id);
+      const tmp = this.state.product.filter((p1) => p1.pr._id !== p._id);
       runInAction(() => {
         this.state.product = tmp;
       });

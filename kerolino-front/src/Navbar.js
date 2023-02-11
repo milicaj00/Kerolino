@@ -180,7 +180,6 @@ export const Navbar = observer(() => {
         className="shopping-bag"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -208,13 +207,16 @@ export const Navbar = observer(() => {
         }}
       >
         <Box sx={{ overflowY: "auto", overflowX: "hidden", maxHeight: "40vh" }}>
-          <BagProductList />
+          <BagProductList bag={true} />
           {bagStore.product.length !== 0 && (
             <Box sx={{ m: "1%" }}>
               <Button
                 fullWidth
                 variant="contained"
-                onClick={() => navigate("/checkout")}
+                onClick={() => {
+                  handleClose();
+                  navigate("/checkout");
+                }}
               >
                 Check out
               </Button>
@@ -223,7 +225,7 @@ export const Navbar = observer(() => {
           {bagStore.product.length === 0 && (
             <Box
               className="cardCenter"
-              sx={{ width: { xs: "80vw", sm: "50vw" }, height: "20vh" }}
+              sx={{ width: { xs: "80vw", sm: "30vw" }, height: "20vh" }}
             >
               <Typography fontWeight={500}>Your Bag Is Empty!</Typography>
             </Box>
