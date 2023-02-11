@@ -42,8 +42,19 @@ export async function getMyOrders(setOrders) {
   return await axiosInstance
     .get("/api/order/my-orders/")
     .then((data) => {
-      console.log(data);
+      console.log(data.data.all_orders);
       setOrders(data.data.all_orders);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export async function deleteOrder(id) {
+  return await axiosInstance
+    .delete("/api/order/delete-order/" + id)
+    .then((res) => {
+      console.log(res.data.message);
     })
     .catch((error) => {
       console.log(error);
@@ -197,6 +208,29 @@ export async function signUp(event) {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
+      }
+    })
+    .catch((error) => {
+      console.log(error.response.data.message);
+    });
+}
+
+export async function addUser(event) {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  await axiosInstance
+    .post("/api/user/add-user", {
+      name: data.get("name"),
+      surname: data.get("surname"),
+      email: data.get("email"),
+      address: data.get("address"),
+      postNumber: data.get("postNumber"),
+      city: data.get("city"),
+      phoneNum: data.get("phoneNum"),
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        console.log(res.data);
       }
     })
     .catch((error) => {

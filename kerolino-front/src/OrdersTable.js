@@ -16,13 +16,14 @@ import {
   CardContent,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getAllOrders, sendOrder } from "./Api";
+import { deleteOrder, getAllOrders, getMyOrders, sendOrder } from "./Api";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const PUTANJA = "http://localhost:8000/";
 
-export const OrdersTable = () => {
+export const OrdersTable = ({ myOrders }) => {
   const [orders, setOrders] = useState([]);
 
   const [current, setCurrent] = useState(-1);
@@ -31,7 +32,8 @@ export const OrdersTable = () => {
     current === i ? setCurrent(-1) : setCurrent(i);
   };
   useEffect(() => {
-    getAllOrders(setOrders);
+    if (myOrders) getMyOrders(setOrders);
+    else getAllOrders(setOrders);
   }, []);
 
   return (
@@ -50,47 +52,48 @@ export const OrdersTable = () => {
                 variant="h6"
                 sx={{ flexGrow: 1, textTransform: "capitalize" }}
               >
-                {o.buyer.fullName}
+                {o.buyer ? o.buyer.fullName : "Recived: " + o.sent}
               </Typography>
               <Typography
                 variant="h6"
                 color="text.secondary"
                 sx={{ marginRight: "2%" }}
               >
-                {o?.date}
+                {o.date_ordered}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Typography fontWeight="500">{o.buyer?.email}</Typography>
-                  <Typography fontWeight="500">
-                    {o.buyer?.phoneNumber}
-                  </Typography>
-                  <Typography
-                    fontWeight="500"
-                    sx={{ textTransform: "capitalize" }}
+                {o.buyer !== false && (
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
                   >
-                    {o.buyer?.address}
-                  </Typography>
-                </Grid>
-
-                {/* <Grid item xs={12} md={6}>
+                    <Typography fontWeight="500">{o.buyer?.email}</Typography>
+                    <Typography fontWeight="500">
+                      {o.buyer?.phoneNumber}
+                    </Typography>
+                    <Typography
+                      fontWeight="500"
+                      sx={{ textTransform: "capitalize" }}
+                    >
+                      {o.buyer?.address}
+                    </Typography>
+                  </Grid>
+                )}
+                <Grid item xs={12} md={o.buyer ? 6 : 12}>
                   {o?.product?.map((p) => (
-                    <Card sx={{ display: "flex" }}>
+                    <Card sx={{ display: "flex", height: "15vh" }}>
                       <CardMedia
                         component="img"
-                        sx={{ width: 151 }}
                         image={PUTANJA + p?.image}
                         alt={p?.name}
+                        sx={{ width: "25%" }}
                       />
                       <Box sx={{ display: "flex", flexDirection: "column" }}>
                         <CardContent sx={{ flex: "1 0 auto" }}>
@@ -101,24 +104,6 @@ export const OrdersTable = () => {
                       </Box>
                     </Card>
                   ))}
-                </Grid> */}
-
-                <Grid item xs={12} md={6}>
-                  <Card variant = "outlined" sx={{ display: "flex", m: "2%" }}>
-                    <CardMedia
-                      component="img"
-                      sx={{ width: "30%" }}
-                      image={PUTANJA + o?.product?.image}
-                      alt={o?.product?.name}
-                    />
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <CardContent sx={{ flex: "1 0 auto" }}>
-                        <Typography>Name: {o?.product?.name}</Typography>
-                        <Typography>Amount: {o?.product?.amount}</Typography>
-                        <Typography>Price: {o?.product?.price}</Typography>
-                      </CardContent>
-                    </Box>
-                  </Card>
                 </Grid>
               </Grid>
             </AccordionDetails>
@@ -134,13 +119,22 @@ export const OrdersTable = () => {
           >
             <IconButton
               disableRipple={true}
-              sx={{ p: 0, color: "green" }}
+              sx={{ p: 0 }}
               onClick={async () => {
-                await sendOrder(o._id);
-                await getAllOrders(setOrders);
+                if (o.buyer) {
+                  await sendOrder(o._id);
+                  await getAllOrders(setOrders);
+                } else {
+                  await deleteOrder(o._id);
+                  await getMyOrders(setOrders);
+                }
               }}
             >
-              <CheckCircleIcon sx={{ fontSize: "1.5em" }} />
+              {o.buyer ? (
+                <CheckCircleIcon sx={{ fontSize: "1.5em", color: "green" }} />
+              ) : (
+                <DeleteIcon sx={{ fontSize: "1.5em", color: "red" }} />
+              )}
             </IconButton>
           </Box>
         </Box>
