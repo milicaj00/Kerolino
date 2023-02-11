@@ -7,168 +7,151 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { NavLink } from "react-router-dom";
-import { Typography, Link, Box, Grid, Container } from "@mui/material";
+import {
+    Typography,
+    Link,
+    Box,
+    Grid,
+    Container,
+    TextField,
+    Button
+} from "@mui/material";
 
 function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" textAlign="center">
-      {"© "}
-      <Link color="inherit" href="/pocetna">
-        Kerolino
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
+    return (
+        <Typography variant="body2" color="text.secondary" textAlign="center">
+            {"© "}
+            <Link color="inherit" href="/pocetna">
+                Kerolino
+            </Link>{" "}
+            {new Date().getFullYear()}
+            {"."}
+        </Typography>
+    );
 }
 
-export const Footer = (theme) => {
-  return (
-    <Box
-      component="footer"
-      id="kontakt"
-      sx={{
-        position: "fixed",
-        width: '100%',
-        bottom: 0,
-        mt: "auto",
-        backgroundColor: (theme) =>
-          theme.palette.mode === "light"
-            ? theme.palette.grey[200]
-            : theme.palette.grey[800],
-      }}
-    >
-      <Box>
-        <Container maxWidth="lg">
-          <Grid container spacing={5} alignItems="flex-start" mb={2} mt ={2}>
-            <Grid item xs={12} sm={4}>
-              <Typography
-                variant="h6"
-                noWrap
-                component="a"
-                href="/"
-                sx={{
-                  mr: 2,
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  letterSpacing: ".2rem",
-                  color: "inherit",
-                }}
-              >
-                Kerolino
-              </Typography>
-              <Box sx={{ display: "flex" }}>
-                <Box>
-                  <Link
-                    href="https://instagram.com"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <InstagramIcon />
-                  </Link>
-                </Box>
-                <Box>
-                  <Link
-                    href="https://twitter.com"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <TwitterIcon />
-                  </Link>
-                </Box>
-                <Box>
-                  <Link
-                    href="https://facebook.com"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <FacebookIcon />
-                  </Link>
-                </Box>
-                <Box>
-                  <Link
-                    href="https://youtube.com"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <YouTubeIcon />
-                  </Link>
-                </Box>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Box border borderBottom={1}>
-                Kontaktirajte nas:
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginTop: "2%",
-                }}
-              >
-                <LocationOnOutlinedIcon />
-                <Link
-                  sx={{ marginLeft: "2%" }}
-                  href="https://goo.gl/maps/Akp9XkeKBDunKv41A"
-                  target="_blank"
-                  rel="noopener"
+export const Footer = theme => {
+    return (
+        <Box
+            component="footer"
+            id="kontakt"
+            sx={{
+                // position: "fixed",
+                width: "100%",
+                bottom: 0,
+                mt: "auto",
+                backgroundColor: theme =>
+                    theme.palette.mode === "light"
+                        ? theme.palette.grey[200]
+                        : theme.palette.grey[800]
+            }}
+        >
+            <Box
+                sx={{ backgroundColor: "#ebebed", color: "#878787" }}
+                width="100vw"
+            >
+                <Box
+                    sx={{
+                        // my: "75%",
+                        // height: "60vh",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "100%"
+                    }}
                 >
-                  <Typography variant="caption" color="text.secondary">
-                    Aleksandra Medvedeva 14
-                  </Typography>
-                </Link>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center ",
-                }}
-              >
-                <EmailOutlinedIcon />
-                <Typography
-                  sx={{ marginLeft: "2%" }}
-                  variant="caption"
-                  color="text.secondary"
-                >
-                  contact@rekolino.com
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center ",
-                }}
-              >
-                <PhoneOutlinedIcon />
-                <Typography
-                  sx={{ marginLeft: "2%" }}
-                  variant="caption"
-                  color="text.secondary"
-                >
-                  +381 66 2568459
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Box border borderBottom={1}>
-                Mapa sajta:
-              </Box>
-              <Box sx={{ marginTop: "2%" }}>
-                <Link href="/">Shop</Link>
-              </Box>
-              <Box>
-                <Link href="/about">About</Link>
-              </Box>
-            </Grid>
-          </Grid>
-        </Container>
+                    <Typography variant="h5" sx={{ mt: "10%" }}>
+                        Prijavite se putem emaila i prvi saznajte sve Kerolino
+                        novosti
+                    </Typography>
 
-       <Copyright />
-      </Box>
-    </Box>
-  );
+                    <div className="dunja-kont">
+                        <input className="dunja-in" />
+                        <button className="dunja-btn">send</button>
+                    </div>
+
+                    <Box sx={{ display: "flex", textDecoration: "uppercase" }}>
+                        <Link sx={{ color: "#878787", m: "5%" }} href="/">
+                            SHOP
+                        </Link>
+
+                        <Link sx={{ color: "#878787", m: "5%" }} href="/about">
+                            ABOUT
+                        </Link>
+                    </Box>
+                </Box>
+
+                <Grid
+                    container
+                    justifyContent={"center"}
+                    className="grid-contact"
+                >
+                    <Grid
+                        sm={2}
+                        item
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center"
+                        }}
+                    >
+                        <LocationOnOutlinedIcon />
+                        <Link
+                            sx={{ marginLeft: "2%" }}
+                            href="https://goo.gl/maps/Akp9XkeKBDunKv41A"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                            >
+                                Aleksandra Medvedeva 14
+                            </Typography>
+                        </Link>
+                    </Grid>
+                    <Grid
+                        item
+                        sm={2}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center "
+                        }}
+                    >
+                        <EmailOutlinedIcon />
+                        <Typography
+                            sx={{ marginLeft: "2%" }}
+                            variant="caption"
+                            color="text.secondary"
+                        >
+                            contact@rekolino.com
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        item
+                        sm={2}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center "
+                        }}
+                    >
+                        <PhoneOutlinedIcon />
+                        <Typography
+                            sx={{ marginLeft: "2%" }}
+                            variant="caption"
+                            color="text.secondary"
+                        >
+                            +381 66 2568459
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box>
+                <Copyright />
+            </Box>
+        </Box>
+    );
 };
