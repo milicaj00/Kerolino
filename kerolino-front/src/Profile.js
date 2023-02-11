@@ -52,6 +52,15 @@ const Profile = observer(() => {
               <Typography>City: {userStore.user?.city} </Typography>
               <Typography>Post Number: {userStore.user?.postNumber}</Typography>
             </CardContent>
+            <CardActions className="cardCenter">
+              <Button
+                variant="contained"
+                
+                onClick={async () => await userStore.deleteUser()}
+              >
+                Delete Profile
+              </Button>
+            </CardActions>
           </Card>
         </Grid>
         <Grid item xs={12} sm={8}>

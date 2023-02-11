@@ -12,6 +12,7 @@ import { set } from "mobx";
 import React, { useState } from "react";
 import { useInstance } from "react-ioc";
 import { useNavigate } from "react-router-dom";
+import { BagProductList } from "./BagProductList";
 import { DeliveryDataForm } from "./DeliveryDataForm";
 import { BagStore } from "./store/BagStore";
 import { UsersDataStore } from "./store/UserStore";
@@ -29,30 +30,9 @@ export const CheckOut = () => {
   return (
     <Box className="marginS">
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DeliveryDataForm/>
+        <DeliveryDataForm />
       </Dialog>
-      <Box className="cardCenter">
-        {bagStore.product.map((p, i) => (
-          <Card variant="outlined" key={i} sx={{ margin: "1% 0%" }}>
-            <Grid container spacing={2}>
-              <Grid item xs={3}>
-                <CardMedia
-                  component="img"
-                  image={PUTANJA + p.pr.image}
-                  alt={p.name}
-                />
-              </Grid>
-              <Grid item xs={9} className="cardCenter">
-                <CardContent>
-                  <Typography>Name: {p.pr.name}</Typography>
-                  <Typography>Amount: {p?.amount}</Typography>
-                  <Typography>Price: {p.pr?.price}</Typography>
-                </CardContent>
-              </Grid>
-            </Grid>
-          </Card>
-        ))}
-      </Box>
+      <BagProductList></BagProductList>
       <Box sx={{ display: "flex", justifyContent: "flex-end", m: "1% 0%" }}>
         <Button variant="contained" size="large" onClick={() => setOpen(true)}>
           Check Out

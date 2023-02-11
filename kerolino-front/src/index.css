@@ -13,8 +13,9 @@ code {
     monospace;
 }
 
-img {
-  aspect-ratio: 1/1;
+.cardImg{
+  min-height:100%;
+  min-width: 100%;
   object-fit: cover;
 }
 
@@ -34,10 +35,8 @@ img {
 }
 
 .grid-contact {
-  
   margin: 3vh;
 }
-
 
 .dunja-kont {
   height: 20%;
@@ -53,7 +52,6 @@ img {
   font-size: 20px;
   height: 100%;
   padding: 15px;
-
 }
 
 .dunja-in {

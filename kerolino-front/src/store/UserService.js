@@ -22,4 +22,8 @@ export class UserService {
       phoneNum: data.get("phoneNum"),
     });
   }
+
+  deleteUser(){
+    return axiosInstance.delete("http://localhost:8000/api/user/delete-user");
+  }
 }

@@ -17,7 +17,6 @@ export const DeliveryDataForm = () => {
     <Box className="marginS">
       <Box
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -81,7 +80,7 @@ export const DeliveryDataForm = () => {
                 id="phonNum"
                 label="Phone Number"
                 name="phoneNum"
-                value={userStore.user.phoneNum}
+                value={userStore.user?.phoneNum}
               />
             </Grid>
             <Grid item xs={12}>
@@ -90,7 +89,7 @@ export const DeliveryDataForm = () => {
                 required
                 fullWidth
                 label="Address"
-                value={userStore.user.address}
+                value={userStore.user?.address}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -99,7 +98,7 @@ export const DeliveryDataForm = () => {
                 fullWidth
                 label="City"
                 name="city"
-                value={userStore.user.city}
+                value={userStore.user?.city}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -108,7 +107,7 @@ export const DeliveryDataForm = () => {
                 fullWidth
                 label="Post Number"
                 name="postNumber"
-                value={userStore.user.postNumber}
+                value={userStore.user?.postNumber}
               />
             </Grid>
           </Grid>

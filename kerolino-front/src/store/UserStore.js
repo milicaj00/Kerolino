@@ -56,4 +56,16 @@ export class UsersDataStore {
       });
     }
   }
+
+  async deleteUser(){
+    try {
+      const response = await this.userService.deleteUser();
+      runInAction(() => {
+        console.log({ response });
+        this.state.user = null
+        localStorage.removeItem("token")
+      });
+    } catch (e) {}
+
+  }
 }

@@ -13,12 +13,13 @@ import {
   ListItemButton,
   Container,
   Menu,
-  MenuItem,
+  Grid,
   Badge,
   Card,
   CardMedia,
   CardContent,
   Divider,
+  BackdropRoot,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -27,7 +28,7 @@ import { observer } from "mobx-react-lite";
 import { useInstance } from "react-ioc";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import { BagStore } from "./store/BagStore";
-
+import { BagProductList } from "./BagProductList";
 
 const PUTANJA = "http://localhost:8000/";
 
@@ -118,24 +119,26 @@ export const Navbar = observer(() => {
           >
             KEROLINO
           </Typography>
-          <IconButton
-            onClick={handleClick}
-            sx={{ color: "#fff" }}
-            aria-controls={open ? "account-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-          >
-            <Badge
-              badgeContent={bagStore.product.length}
-              color="error"
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
+          {(!userStore.user?.is_seller || !userStore.user) && (
+            <IconButton
+              onClick={handleClick}
+              sx={{ color: "#fff" }}
+              aria-controls={open ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
             >
-              <ShoppingBagOutlinedIcon />
-            </Badge>
-          </IconButton>
+              <Badge
+                badgeContent={bagStore.product.length}
+                color="error"
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+              >
+                <ShoppingBagOutlinedIcon />
+              </Badge>
+            </IconButton>
+          )}
 
           <IconButton
             edge="start"
@@ -204,36 +207,10 @@ export const Navbar = observer(() => {
           vertical: "bottom",
         }}
       >
-        <Box sx={{ overflowY: "auto", maxHeight: "40vh" }}>
-          {bagStore.product.map((p, i) => (
-            <Box
-              key={i}
-              sx={{
-                width: { xs: "80vw", sm: "50vw" },
-                height: "15vh",
-                marginBottom: "5%",
-              }}
-            >
-              <Card variant="outlined" sx={{ display: "flex" }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: "25%" }}
-                  image={PUTANJA + p.pr.image}
-                  alt={p.name}
-                />
-
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <CardContent>
-                    <Typography>Name: {p.pr.name}</Typography>
-                    <Typography>Amount: {p?.amount}</Typography>
-                    <Typography>Price: {p.pr?.price}</Typography>
-                  </CardContent>
-                </Box>
-              </Card>
-            </Box>
-          ))}
+        <Box sx={{ overflowY: "auto", overflowX: "hidden", maxHeight: "40vh" }}>
+          <BagProductList />
           {bagStore.product.length !== 0 && (
-            <Box sx={{ m: "2% 0%" }}>
+            <Box sx={{ m: "1%" }}>
               <Button
                 fullWidth
                 variant="contained"
