@@ -26,11 +26,11 @@ export const theme = createTheme({
            
         },
         secondary: {
-            main: "#323432",
+            main: "#f193a8",
             contrastText: "white"
         },
         error: {
-            main: "#f83200"
+            main: "#a71313"
         },
         text:{
           primary:'#7F8487'

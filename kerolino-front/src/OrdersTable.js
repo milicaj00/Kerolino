@@ -133,7 +133,7 @@ export const OrdersTable = ({ myOrders }) => {
               {o.buyer ? (
                 <CheckCircleIcon sx={{ fontSize: "1.5em", color: "green" }} />
               ) : (
-                <DeleteIcon sx={{ fontSize: "1.5em", color: "red" }} />
+                <DeleteIcon sx={{ fontSize: "1.5em", color: "#a71313" }} />
               )}
             </IconButton>
           </Box>

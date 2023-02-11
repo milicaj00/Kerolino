@@ -43,13 +43,13 @@ export const Navbar = observer(() => {
       ? [
           { val: "Shop", link: "/" },
           { val: "About", link: "/about" },
-          { val: "Contact", link: "/contact" },
+          { val: "Contact", link: "/" },
           { val: "Profile", link: "/profile" },
         ]
       : [
           { val: "Shop", link: "/" },
           { val: "About", link: "/about" },
-          { val: "Contact", link: "/contact" },
+          { val: "Contact", link: "" },
           { val: "Sign In", link: "/signin" },
         ];
 
@@ -75,8 +75,11 @@ export const Navbar = observer(() => {
         {navItems.map((item) => (
           <ListItem key={item.val} disablePadding>
             <ListItemButton
+              href={item.val === "Contact" && "#kontakt"}
               sx={{ textAlign: "center" }}
-              onClick={() => navigate(item.link)}
+              onClick={() => {
+                if (item.link !== "") navigate(item.link);
+              }}
             >
               <ListItemText primary={item.val} />
             </ListItemButton>
@@ -129,7 +132,7 @@ export const Navbar = observer(() => {
             >
               <Badge
                 badgeContent={bagStore.product.length}
-                color="error"
+                color="secondary"
                 anchorOrigin={{
                   vertical: "bottom",
                   horizontal: "right",
@@ -150,9 +153,12 @@ export const Navbar = observer(() => {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Button
+                href={item.val === "Contact" && "#kontakt"}
                 key={item.val}
                 sx={{ color: "#fff" }}
-                onClick={() => navigate(item.link)}
+                onClick={() => {
+                  if (item.link !== "") navigate(item.link);
+                }}
               >
                 {item.val}
               </Button>

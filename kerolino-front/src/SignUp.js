@@ -63,6 +63,7 @@ export const SignUp = () => {
           </Grid>
         </Grid>
         <Button
+          // color="secondary"
           type="submit"
           fullWidth
           variant="contained"

@@ -76,7 +76,6 @@ export const DeliveryDataForm = () => {
               <TextField
                 required
                 fullWidth
-                type="number"
                 id="phonNum"
                 label="Phone Number"
                 name="phoneNum"

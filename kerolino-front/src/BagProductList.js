@@ -52,7 +52,7 @@ export const BagProductList = ({ bag }) => {
                     sx={{ p: 0 }}
                     onClick={() => bagStore.removeProduct(p.pr)}
                   >
-                    <DeleteIcon sx={{ fontSize: "1.5em", color: "red" }} />
+                    <DeleteIcon sx={{ fontSize: "1.5em", color: "#a71313" }} />
                   </IconButton>
                 )}
               </CardActions>

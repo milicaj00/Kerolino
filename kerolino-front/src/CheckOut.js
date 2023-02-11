@@ -34,7 +34,7 @@ export const CheckOut = () => {
       </Dialog>
       <BagProductList></BagProductList>
       <Box sx={{ display: "flex", justifyContent: "flex-end", m: "1% 0%" }}>
-        <Button variant="contained" size="large" onClick={() => setOpen(true)}>
+        <Button variant="contained" color = "secondary" size="large" onClick={() => setOpen(true)}>
           Check Out
         </Button>
       </Box>

@@ -11,7 +11,11 @@ export async function addOrder(buyerId, products) {
       console.log(res.data.message);
     })
     .catch((error) => {
-      console.log(error);
+      if (error.response.status === 422) {
+        alert(error.response.data.message);
+      } else {
+        console.log(error.response);
+      }
     });
 }
 
@@ -104,14 +108,10 @@ export async function findProducts(
   filterName = "",
   filterCategory = ""
 ) {
-  const filter = "";
-  console.log("filterName", filterName);
-  console.log("filterCategory", filterCategory);
-  if (filterName !== "") filter = filter + "?name=" + filterName;
-  if (filterCategory !== "") filter = filter + "?catId=" + filterCategory;
-  console.log(filter);
   return await axiosInstance
-    .get("/api/product/filter-products" + filter)
+    .get(
+      `/api/product/filter-products?name=${filterName}&catId=${filterCategory}`
+    )
     .then((data) => {
       console.log(data.data.products);
       setProducts(data.data.products);

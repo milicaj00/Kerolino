@@ -126,19 +126,20 @@ export const Shop = observer(() => {
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    Amount: {p.amount}
+                                    Amount left: {p.amount}
                                 </Typography>
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    Cena: {p.price}
+                                    Price: {p.price}
                                 </Typography>
                             </CardContent>
                             <CardActions className="cardCenter">
                                 <Button
                                     size="small"
-                                    color="primary"
+                                    variant="contained"
+                                    color="secondary"
                                     disabled={p.amount === 0}
                                     onClick={() => bagStore.addProduct(p)}
                                 >
