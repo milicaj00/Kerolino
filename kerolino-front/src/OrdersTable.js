@@ -122,7 +122,7 @@ export const OrdersTable = ({ myOrders }) => {
               sx={{ p: 0 }}
               onClick={async () => {
                 if (o.buyer) {
-                  await sendOrder(o._id);
+                  await sendOrder(o);
                   await getAllOrders(setOrders);
                 } else {
                   await deleteOrder(o._id);

@@ -8,7 +8,7 @@ const orderRoutes: Router = express.Router()
 orderRoutes.get('/all-orders', auth, getAllOrders)
 orderRoutes.get('/my-orders', auth, getMyOrders)
 orderRoutes.post('/add-order', v_addOrder, addOrder)
-orderRoutes.put('/send-order/:orderId', auth, sendOrder)
+orderRoutes.put('/send-order', auth, sendOrder)
 orderRoutes.delete('/delete-order/:orderId', auth, deleteOrder)
 
 export default orderRoutes

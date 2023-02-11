@@ -75,43 +75,23 @@ const About = () => {
                     }}
                 >
                     <Typography variant="text.secondary">
-                        Teretana RDLGym počela je sa radom u februaru 2015.
-                        godine, kada smo pod istim krovom okupili najbolje
-                        stručnjake u regionu kako bismo svim našim klijentima
-                        pružili nezaboravno iskustvo treninga na jednom mestu. U
-                        ovaj posao ušli smo punim srcem i sa jasnom idejom: da
-                        budemo apsolutni lideri u oblasti fizičke aktivnosti u
-                        Srbiji ali i u zemljama u regionu.
-                    </Typography>
-
-                    <Typography variant="text.secondary">
-                        Ne pravimo nikakav kompromis kada je u pitanju oprema
-                        koju koristimo u poslu i uvek odlučno biramo da budemo
-                        najbolji i pružimo najbolje.
-                    </Typography>
-
-                    <Typography variant="text.secondary">
-                        Zato ćete kod nas vežbati na najsavremenijim spravama iz
-                        TechnoGym porodice, a svi naši partneri sa kojima ćete
-                        se susreti u teretani RDLGym će doprineti vašem
-                        maksimalnom užitku jer radimo isključivo sa najboljima,
-                        a to su: Jana, Proteini.si, Red Bull, Nike i Nivea.
-                    </Typography>
-
-                    <Typography variant="text.secondary">
-                        Naša misija je da pružimo najbolju uslugu i ostvarimo
-                        neprikosnovene rezultate sa svim klijentima koji nam
-                        ukazuju svoje dragoceno poverenje i da uvek pružimo i
-                        više od maksimuma: a to znači da ne budemo samo treneri,
-                        već i savetnici i posvećeni motivatori.
-                    </Typography>
-
-                    <Typography mb={4} variant="text.secondary">
-                        Od kako postojimo naša vizija je ista – da budemo
-                        sinonim za teretanu koja je ubedljivo najbolja po svim
-                        svetskim standardima i koji konstantno diktira nove
-                        trendove u sferi zdravog načina života i fizičke
-                        aktivnosti.
+                        ESed ut perspiciatis unde omnis iste natus error sit
+                        voluptatem accusantium doloremque laudantium, totam rem
+                        aperiam, eaque ipsa quae ab illo inventore veritatis et
+                        quasi architecto beatae vitae dicta sunt explicabo. Nemo
+                        enim ipsam voluptatem quia voluptas sit aspernatur aut
+                        odit aut fugit, sed quia consequuntur magni dolores eos
+                        qui ratione voluptatem sequi nesciunt. Neque porro
+                        quisquam est, qui dolorem ipsum quia dolor sit amet,
+                        consectetur, adipisci velit, sed quia non numquam eius
+                        modi tempora incidunt ut labore et dolore magnam aliquam
+                        quaerat voluptatem. Ut enim ad minima veniam, quis
+                        nostrum exercitationem ullam corporis suscipit
+                        laboriosam, nisi ut aliquid ex ea commodi consequatur?
+                        Quis autem vel eum iure reprehenderit qui in ea
+                        voluptate velit esse quam nihil molestiae consequatur,
+                        vel illum qui dolorem eum fugiat quo voluptas nulla
+                        pariatur?
                     </Typography>
                 </Box>
             </Box>

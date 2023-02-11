@@ -13,8 +13,8 @@ code {
     monospace;
 }
 
-.cardImg{
-  min-height:100%;
+.cardImg {
+  min-height: 100%;
   min-width: 100%;
   object-fit: cover;
 }
@@ -80,4 +80,13 @@ code {
   width: 30%;
 
   text-transform: uppercase;
+}
+
+
+.toast-success-body {
+  color: #878778 !important;
+}
+
+.toast-success-progress-bar {
+  background-color: #92A9BD !important;
 }

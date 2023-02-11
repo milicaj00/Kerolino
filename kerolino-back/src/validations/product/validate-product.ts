@@ -8,9 +8,7 @@ export const v_create = (req: Request, res: Response, next: NextFunction) => {
         return res.status(401).json({ message: 'Unauthorized' })
     }
 
-    console.log(req.body)
-
-    if (!req.body.categoryId) {
+    if (!req.body.category) {
         return res.status(403).json({ message: 'categoryId not valid' })
     }
 

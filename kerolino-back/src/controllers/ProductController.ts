@@ -12,14 +12,10 @@ export const createProduct = async (req: Request, res: Response) => {
             image: req.file?.path.split('\\')[1],
             price: req.body.price,
             amount: req.body.amount,
-            category: req.body.categoryId
-            //  owner: req.body.ownerId
+            category: req.body.category
+           
         })
-        // const user = await User.findById(req.body.ownerId)
-        // if (user) {
-        //     await user.updateOne({ $push: { myProducts: product._id } })
-        // }
-
+    
         return await product.save()
             .then(() => res.status(200).json({ message: 'Successfully added new product' }))
             .catch(err => {
@@ -52,23 +48,9 @@ export const getProduct = async (req: Request, res: Response) => {
     }
 }
 
-// export const getAllProducts = async (req: Request, res: Response) => {
-
-//     try {
-//         const products = await Product.find().populate('category')
-
-//         return res.status(200).json({ products })
-//     }
-//     catch (err: any) {
-//         console.log(err)
-//         return res.status(500).json({ message: 'Connection error' })
-//     }
-// }
-
 export const editProduct = async (req: Request, res: Response) => {
 
     const { productId } = req.body
-
 
     try {
         const product = await Product.findById(productId)
