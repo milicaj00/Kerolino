@@ -18,7 +18,7 @@ export const generateAccessToken = (user: Object) => {
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log(req.body)
+     
         const token = req.header('Authorization')?.replace('Bearer ', '');
 
         if (!token) {

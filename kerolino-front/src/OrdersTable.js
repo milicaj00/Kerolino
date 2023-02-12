@@ -88,7 +88,7 @@ export const OrdersTable = ({ myOrders }) => {
                 )}
                 <Grid item xs={12} md={o.buyer ? 6 : 12}>
                   {o?.product?.map((p) => (
-                    <Card sx={{ display: "flex", height: "15vh" }}>
+                    <Card sx={{ display: "flex", height: "15vh" }} key = {p.orderId}>
                       <CardMedia
                         component="img"
                         image={PUTANJA + p?.image}
@@ -125,7 +125,7 @@ export const OrdersTable = ({ myOrders }) => {
                   await sendOrder(o);
                   await getAllOrders(setOrders);
                 } else {
-                  await deleteOrder(o._id);
+                  await deleteOrder(o);
                   await getMyOrders(setOrders);
                 }
               }}

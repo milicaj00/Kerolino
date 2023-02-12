@@ -28,11 +28,6 @@ export class UsersDataStore {
             runInAction(() => {
                 console.log({ response });
                 this.state.user = response.data;
-
-                localStorage.setItem(
-                    "token",
-                    JSON.stringify(response.data.access_token)
-                );
             });
         } catch (e) {}
     }
@@ -51,16 +46,34 @@ export class UsersDataStore {
         }
     }
 
-    async editUser(user) {
+    async editUser(form) {
+        const data = new FormData(form);
+        const pom = {
+            address: data.get("address"),
+            postNumber: data.get("postNumber"),
+            city: data.get("city"),
+            phoneNum: data.get("phoneNum")
+        };
+        if (
+            this.user.address === pom.address &&
+            this.user.postNumber === pom.postNumber &&
+            this.user.city === pom.city &&
+            this.user.phoneNum === pom.phoneNum
+        ) {
+            return;
+        }
         try {
-            const response = await this.userService.editUser(user);
+            this.state.loading = true;
+            const response = await this.userService.editUser(pom);
             runInAction(() => {
                 console.log({ response });
                 this.state.user = response.data;
+                this.state.loading = false;
             });
         } catch (e) {
             runInAction(() => {
                 throw Error(e);
+                this.state.loading = false;
             });
         }
     }

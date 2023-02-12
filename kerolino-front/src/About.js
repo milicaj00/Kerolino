@@ -57,7 +57,7 @@ const About = () => {
                 sx={{
                     display: "flex",
                     justifyContent: "space-evenly",
-                    flexWrap: { sm: "wrap", md: "nowrap", sx: "wrap" }
+                    flexWrap: { xs: "wrap", sm: "wrap", md: "nowrap" }
                 }}
             >
                 <Box

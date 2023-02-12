@@ -3,6 +3,7 @@ import axiosInstance from "./api/axiosInstance";
 import { notifyError, notifySuccess } from "./notifications/notifications";
 
 export async function addOrder(buyerId, products) {
+    console.log(buyerId);
     await axiosInstance
         .post("/api/order/add-order", {
             buyerId,
@@ -11,6 +12,9 @@ export async function addOrder(buyerId, products) {
         .then(res => {
             console.log(res.data.message);
             notifySuccess("success");
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         })
         .catch(error => {
             if (error.response.status === 422) {
@@ -78,21 +82,26 @@ export async function getMyOrders(setOrders) {
         });
 }
 
-export async function deleteOrder(id) {
-    return await axiosInstance
-        .delete("/api/order/delete-order/" + id)
-        .then(res => {
-            console.log(res.data.message);
-            notifySuccess("success");
-        })
-        .catch(error => {
-            console.log(error);
-            notifyError(
-                error.response?.data?.message
-                    ? error.response?.data?.message
-                    : "Doslo je di greske"
-            );
-        });
+export async function deleteOrder(send_orders) {
+    let error = false;
+
+    for (let i = 0; i < send_orders.product.length && !error; i++) {
+        await axiosInstance
+            .delete("/api/order/delete-order/" + send_orders.product[i].orderId)
+            .then(res => {
+                console.log(res.data.message);
+            })
+            .catch(error => {
+                error = true;
+                console.log(error);
+            });
+    }
+
+    if (error) {
+        notifyError("Doslo je do greske");
+    } else {
+        notifySuccess("success");
+    }
 }
 
 export async function getAllCategories(setCategories) {
@@ -295,34 +304,5 @@ export async function signUp(event) {
                     : "Doslo je di greske"
             );
             console.log(error.response.data.message);
-        });
-}
-
-export async function addUser(event) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    await axiosInstance
-        .post("/api/user/add-user", {
-            name: data.get("name"),
-            surname: data.get("surname"),
-            email: data.get("email"),
-            address: data.get("address"),
-            postNumber: data.get("postNumber"),
-            city: data.get("city"),
-            phoneNum: data.get("phoneNum")
-        })
-        .then(res => {
-            if (res.status === 200) {
-                console.log(res.data);
-                notifySuccess("success");
-            }
-        })
-        .catch(error => {
-            console.log(error.response.data.message);
-            notifyError(
-                error.response?.data?.message
-                    ? error.response?.data?.message
-                    : "Doslo je di greske"
-            );
         });
 }

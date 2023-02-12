@@ -10,7 +10,7 @@ export const addCategory = async (req: Request, res: Response) => {
     }
 
     if (!req.body.name || req.body.name.length < 2) {
-        res.status(422).json({ message: 'name is required' })
+        return res.status(422).json({ message: 'name is required' })
     }
 
     const cat: CategoryModelInterface = new Category({

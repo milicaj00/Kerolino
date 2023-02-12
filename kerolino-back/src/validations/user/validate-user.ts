@@ -81,20 +81,18 @@ export const v_edit = (req: Request, res: Response, next: NextFunction) => {
         return res.status(500).json({ message: 'token id' })
     }
 
-    if (req.body.name && req.body.name.length < 2) {
+    if (req.body.name && req.body.name?.length < 2) {
         return res.status(403).json({ message: 'not valid inputs' })
     }
-    if (!req.body.surname && req.body.surname.length < 2) {
+    if (!req.body.surname && req.body.surname?.length < 2) {
         return res.status(403).json({ message: 'not valid inputs' })
     }
 
     const emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (req.body.email && !req.body.email.match(emailFormat)) {
+    if (req.body.email && !req.body.email?.match(emailFormat)) {
         return res.status(403).json({ message: 'not valid inputs' })
     }
-    if (req.body.password && req.body.password.length < 5) {
-        return res.status(403).json({ message: 'not valid inputs' })
-    }
+   
     if (req.body.address && req.body.address.length < 2) {
         return res.status(403).json({ message: 'not valid inputs' })
     }

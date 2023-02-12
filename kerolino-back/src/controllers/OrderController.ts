@@ -28,7 +28,7 @@ const make_order = (order: any, buyer: boolean = false) => {
         address += order.buyer.city + " "
     }
     return {
-        _id: order._id,
+        // _id: order._id,
         sent: order.sent,
         product: order.product &&
             [
@@ -37,6 +37,7 @@ const make_order = (order: any, buyer: boolean = false) => {
         date_ordered: dayjs(order.createdAt).format('DD-MM-YYYY HH:mm'),
         date_sent: dayjs(order.updatedAt).format('DD-MM-YYYY HH:mm'),
         buyer: buyer && {
+            _id: '_id' in order.buyer ? order.buyer._id : "",
             fullName: 'fullName' in order.buyer ? order.buyer.fullName : "",
             address: address,
             phoneNumber: 'phoneNum' in order.buyer ? order.buyer.phoneNum : "",
@@ -104,8 +105,10 @@ export const getAllOrders = async (req: Request, res: Response) => {
 
         for (let i = 1; i < orders.length; i++) {
             const date = dayjs(orders[i].createdAt).format('DD-MM-YYYY HH:mm')
+
             const order = orders[i]
-            if (all_orders[j].date_ordered === date) {
+           
+            if (all_orders[j].date_ordered === date && all_orders[j].buyer._id === order.buyer._id) {
                 all_orders[j].product.push(make_product(order))
             }
             else {
@@ -207,16 +210,32 @@ export const sendOrder = async (req: Request, res: Response) => {
     }
 
     const { orders } = req.body
-   
+
 
     if (!orders) {
         return res.status(422).json({ message: 'you must enter orders' })
     }
 
     try {
+        let brisi = false
+        const pom: any = await Order.findById(orders[0]).populate('buyer')
+
+        if (pom) {
+            if (!pom.buyer.password) {
+                brisi = true
+                await User.findByIdAndDelete(pom.buyer._id)
+            }
+        }
         for (let i = 0; i < orders.length; i++) {
-            const order = await Order.findByIdAndUpdate(orders[i], { $set: { sent: true } })
-           
+            let order;
+            if (brisi) {
+                order = await Order.findByIdAndDelete(orders[i])
+            }
+            else {
+
+                order = await Order.findByIdAndUpdate(orders[i], { $set: { sent: true } })
+            }
+
             if (!order) {
                 return res.status(404).json({ message: 'order not found' })
             }
